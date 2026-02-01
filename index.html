@@ -61,16 +61,42 @@ reader.readAsDataURL(file);
 });
 
 function generate(){
-let p=product.value;
-let d=desc.value;
-let s=style.value;
+  let p = product.value;
+  let d = desc.value;
+  let s = style.value;
 
-let prompt=`Create UGC vertical video 9:16 about ${p}.
-Show hands holding product.
-${d}.
-Style: ${s}.
+  let prompt = `
+SCENE 1:
+Close-up product on table.
+Hands enter frame and pick up product.
 Lighting natural, realistic.
-Use uploaded product image as reference.`;
+
+SCENE 2:
+Hands rotating product slowly.
+Show texture and details.
+${d}
+
+SCENE 3:
+Hands using product naturally.
+Lifestyle indoor.
+Style: ${s}
+
+SCENE 4:
+Hero shot product center frame.
+Hero shot product center frame.
+Clean background.
+Text overlay: ${p}
+
+VIDEO SETTINGS:
+Vertical 9:16
+Natural handheld
+Indoor lighting
+No face, hands only
+Use uploaded product image as reference
+`;
+
+  result.value = prompt;
+}
 
 result.value=prompt;
 }
