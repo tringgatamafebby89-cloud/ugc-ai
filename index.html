@@ -2,302 +2,343 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<title>Febby AI Studio</title>
-
+<title>Febby AI Studio PRO</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" href="icon.png">
 
 <style>
+:root{
+--bg1:#12001f;
+--bg2:#3b0066;
+--card:#1c002e;
+--accent1:#ff4fd8;
+--accent2:#7b4dff;
+--text:#ffffff;
+}
+
 body{
 margin:0;
-font-family:Arial, sans-serif;
-background:radial-gradient(circle at top,#3a0066,#0a0015);
-color:white;
+font-family:Arial;
+background:linear-gradient(135deg,var(--bg1),var(--bg2),var(--bg1));
+color:var(--text);
+transition:.3s;
 }
 
-.container{
-max-width:1000px;
-margin:auto;
+/* Sidebar */
+.sidebar{
+position:fixed;
+left:-260px;
+top:0;
+width:260px;
+height:100%;
+background:#0f001c;
 padding:20px;
+transition:.3s;
+z-index:10;
+overflow:auto;
+}
+.menuBtn{
+position:fixed;
+top:15px;
+left:15px;
+font-size:26px;
+cursor:pointer;
+z-index:20;
+}
+.sidebar h3{margin-top:18px;}
+.sidebar button, .sidebar select, .sidebar input{
+width:100%;
+margin:6px 0;
+padding:10px;
+border:none;
+border-radius:8px;
+background:linear-gradient(90deg,var(--accent1),var(--accent2));
+color:white;
+font-weight:bold;
 }
 
+/* App */
+.container{
+max-width:1100px;
+margin:auto;
+padding:40px 15px;
+}
 .card{
-background:#14001f;
-border-radius:20px;
+background:var(--card);
 padding:25px;
-box-shadow:0 0 25px #a855ff;
+border-radius:20px;
+box-shadow:0 0 25px var(--accent2);
 }
+h1{text-align:center;}
 
-h1{text-align:center;margin:5px}
-h3{text-align:center;font-weight:normal;color:#ccc}
-
-input,select,textarea{
+select,input,textarea{
 width:100%;
 padding:10px;
-margin:6px 0;
 border-radius:8px;
 border:none;
-font-size:14px;
+margin-top:8px;
 }
-
-textarea{min-height:90px}
+textarea{min-height:90px;}
 
 .row{
-display:flex;
+display:grid;
+grid-template-columns:1fr 1fr;
 gap:10px;
-flex-wrap:wrap;
 }
 
-.row > div{flex:1}
-
-button{
+button.main{
 width:100%;
 padding:12px;
-margin-top:10px;
+margin-top:12px;
 border:none;
 border-radius:10px;
-font-size:15px;
-font-weight:bold;
+background:linear-gradient(90deg,var(--accent1),var(--accent2));
 color:white;
-cursor:pointer;
-background:linear-gradient(90deg,#ff4fd8,#7b4dff);
+font-size:16px;
+font-weight:bold;
 }
 
-.tabbar{
+.tabs{
 display:flex;
 gap:6px;
 margin-top:10px;
 }
-
-.tabbar button{
+.tabs button{
 flex:1;
-background:#2b003d;
+padding:8px;
+border:none;
+border-radius:8px;
+background:#2b0050;
+color:white;
 }
+.tabs button.active{background:var(--accent1);}
 
-.tabbar button.active{
-background:#ff4fd8;
-}
+#result{height:220px;margin-top:10px;}
 
-.output{
-width:100%;
-min-height:170px;
-margin-top:8px;
-border-radius:10px;
-padding:10px;
-}
-
-.footer{
-text-align:center;
-font-size:12px;
-color:#aaa;
-margin-top:10px;
+.light{
+--bg1:#f0f0f0;
+--bg2:#d0d0d0;
+--card:#ffffff;
+--text:#000000;
 }
 </style>
 </head>
 
 <body>
-<div class="container">
 
+<div class="menuBtn" onclick="toggleMenu()">☰</div>
+
+<div id="sidebar" class="sidebar">
+<h3>PLATFORM</h3>
+<button onclick="setPlatform('TikTok')">TikTok</button>
+<button onclick="setPlatform('Shopee')">Shopee</button>
+<button onclick="setPlatform('YouTube Shorts')">YouTube Shorts</button>
+
+<h3>TEMA</h3>
+<select onchange="setTheme(this.value)">
+<option value="purple">Ungu Pink</option>
+<option value="blue">Biru</option>
+<option value="green">Hijau</option>
+<option value="red">Merah</option>
+</select>
+<button onclick="toggleLight()">Light / Dark</button>
+
+<h3>BACKGROUND</h3>
+<input type="file" accept="image/*" onchange="setBackground(this)">
+<button onclick="resetBackground()">Reset</button>
+</div>
+
+<div class="container" id="app">
 <div class="card">
 
-<h1>Febby AI Studio</h1>
-<h3>UGC Ultimate Creator Engine</h3>
+<h1>Febby AI Studio PRO</h1>
 
-<!-- ===== INPUT UTAMA ===== -->
-
-<div class="row">
-<div>
-<select id="language">
-<option>Indonesia</option>
-<option>English</option>
-<option>Jawa</option>
-<option>Sunda</option>
+<!-- PRO PRESET -->
+<select id="template">
+<option>Skincare Review</option>
+<option>Before After</option>
+<option>Unboxing</option>
+<option>Testimoni</option>
+<option>Tutorial</option>
+<option>Problem Solution</option>
 </select>
-</div>
 
-<div>
-<select id="niche">
-<option>Skincare</option>
-<option>Fashion</option>
-<option>Food</option>
-<option>Elektronik</option>
-<option>Fitness</option>
-<option>Makeup</option>
-<option>Parfum</option>
+<select id="tone">
+<option>Soft</option>
+<option>Friendly</option>
+<option>Energetic</option>
+<option>Confident</option>
+<option>Professional</option>
 </select>
-</div>
-</div>
+
+<select id="objective">
+<option>Awareness</option>
+<option>Edukasi</option>
+<option>Jualan</option>
+<option>Branding</option>
+</select>
 
 <input id="product" placeholder="Nama Produk">
-
-<textarea id="benefit" placeholder="Manfaat Produk (boleh enter banyak baris)"></textarea>
+<textarea id="benefit" placeholder="Manfaat Produk (boleh enter)"></textarea>
 
 <div class="row">
-<div>
 <select id="gender">
 <option>Wanita</option>
 <option>Pria</option>
 </select>
-</div>
-
-<div>
 <select id="hijab">
 <option>Non Hijab</option>
 <option>Hijab</option>
 </select>
 </div>
 
-<div>
-<select id="market">
-<option>Remaja</option>
-<option>Dewasa</option>
-<option>Ibu-Ibu</option>
-<option>Pria Dewasa</option>
-<option>Semua Umur</option>
-</select>
-</div>
-</div>
+<input id="style" placeholder="Gaya video (natural, handheld, cinematic)">
 
-<input id="style" placeholder="Gaya Video (natural, handheld, cinematic, dll)">
-
-<select id="location">
-<option>Indoor Rumah</option>
-<option>Kamar Tidur</option>
-<option>Kamar Mandi</option>
-<option>Ruang Tamu</option>
-<option>Dapur</option>
-<option>Depan Cermin</option>
-<option>Teras</option>
-<option>Balkon</option>
-<option>Cafe</option>
-<option>Mall</option>
-<option>Kantor</option>
-<option>Studio</option>
-<option>Pantai</option>
-<option>Taman</option>
-<option>Dalam Mobil</option>
+<select id="resolution">
+<option>9:16 (1080x1920)</option>
+<option>1:1 (1080x1080)</option>
+<option>16:9 (1920x1080)</option>
 </select>
 
-<select id="talk">
-<option>Berbicara + Overlay</option>
-<option>Hanya Berbicara</option>
-<option>Hanya Overlay Text</option>
-<option>Tanpa Bicara</option>
+<select id="quality">
+<option>HD 720p</option>
+<option>Full HD 1080p</option>
+<option>4K</option>
 </select>
 
-<!-- ===== SCENE ===== -->
+<h3>Scene & Durasi</h3>
 
-<h4>Scene & Durasi (detik)</h4>
+<div class="row"><input id="d1" value="5"><input id="s1" placeholder="Scene 1"></div>
+<div class="row"><input id="d2" value="5"><input id="s2" placeholder="Scene 2"></div>
+<div class="row"><input id="d3" value="5"><input id="s3" placeholder="Scene 3"></div>
+<div class="row"><input id="d4" value="5"><input id="s4" placeholder="Scene 4"></div>
 
-<div class="row">
-<div><input id="d1" value="5"></div>
-<div><input id="s1" placeholder="Scene 1"></div>
+<input id="total" readonly>
+
+<button class="main" onclick="generate()">GENERATE</button>
+
+<div class="tabs">
+<button class="active" onclick="setTab('prompt',this)">Prompt</button>
+<button onclick="setTab('caption',this)">Caption</button>
+<button onclick="setTab('hashtag',this)">Hashtag</button>
+<button onclick="setTab('hook',this)">Hook</button>
+<button onclick="setTab('cta',this)">CTA</button>
 </div>
 
-<div class="row">
-<div><input id="d2" value="5"></div>
-<div><input id="s2" placeholder="Scene 2"></div>
-</div>
+<textarea id="result"></textarea>
+<button class="main" onclick="copyText()">COPY</button>
 
-<div class="row">
-<div><input id="d3" value="5"></div>
-<div><input id="s3" placeholder="Scene 3"></div>
-</div>
-
-<div class="row">
-<div><input id="d4" value="5"></div>
-<div><input id="s4" placeholder="Scene 4"></div>
-</div>
-
-<input id="total" placeholder="Total Durasi" readonly>
-
-<button onclick="generate()">Generate</button>
-
-<div class="tabbar">
-<button class="active" onclick="showTab('prompt',this)">Prompt</button>
-<button onclick="showTab('caption',this)">Caption</button>
-<button onclick="showTab('hashtag',this)">Hashtag</button>
-<button onclick="showTab('hook',this)">Hook</button>
-<button onclick="showTab('cta',this)">CTA</button>
-</div>
-
-<textarea id="result" class="output"></textarea>
-
-<button onclick="copyText()">Copy</button>
-
-<div class="footer">Gratis • Local App • No API</div>
+<p style="text-align:center;font-size:12px">Gratis • Local App • No API</p>
 
 </div>
 </div>
 
 <script>
+let platform="TikTok";
+let tab="prompt";
 
-let mode="prompt";
+const hooks=["Stop scroll!","Kamu wajib tau ini!","Produk ini viral!","Serius works!"];
+const ctas=["Klik keranjang sekarang!","Checkout sekarang!","Buruan order!"];
 
-function showTab(tab,btn){
-mode=tab;
-document.querySelectorAll(".tabbar button").forEach(b=>b.classList.remove("active"));
+function toggleMenu(){
+let sb=document.getElementById("sidebar");
+sb.style.left = sb.style.left=="0px" ? "-260px":"0px";
+}
+
+function setPlatform(p){platform=p;}
+
+function setTab(t,btn){
+tab=t;
+document.querySelectorAll(".tabs button").forEach(b=>b.classList.remove("active"));
 btn.classList.add("active");
 }
 
 function generate(){
+let d1v=+d1.value||0,d2v=+d2.value||0,d3v=+d3.value||0,d4v=+d4.value||0;
+total.value=(d1v+d2v+d3v+d4v)+" detik";
 
-let total =
-(+d1.value||0)+(+d2.value||0)+(+d3.value||0)+(+d4.value||0);
-document.getElementById("total").value= total+" detik";
+let hook=hooks[Math.floor(Math.random()*hooks.length)];
+let cta=ctas[Math.floor(Math.random()*ctas.length)];
 
-let base = `
-${language.value} | ${niche.value}
+let prompt=
+`Platform: ${platform}
+Template: ${template.value}
+Objective: ${objective.value}
+Tone: ${tone.value}
+
 Produk: ${product.value}
 Manfaat: ${benefit.value}
+
 Model: ${gender.value} ${hijab.value}
-Target Market: ${market.value}
-Lokasi: ${location.value}
-Gaya: ${style.value}
-Model Action: ${talk.value}
+Style: ${style.value}
 
-Scene1 (${d1.value}s): ${s1.value}
-Scene2 (${d2.value}s): ${s2.value}
-Scene3 (${d3.value}s): ${s3.value}
-Scene4 (${d4.value}s): ${s4.value}
+Resolusi: ${resolution.value}
+Quality: ${quality.value}
 
-Vertical 9:16, realistic, soft light, sharp focus, product clear.
-`;
+HOOK: "${hook}"
 
-let caption = `Cobain ${product.value} sekarang! ✨
-Kulit jadi lebih sehat & glowing.
-${benefit.value}`;
+Scene1 (${d1v}s): ${s1.value}
+Scene2 (${d2v}s): ${s2.value}
+Scene3 (${d3v}s): ${s3.value}
+Scene4 (${d4v}s): ${s4.value}
 
-let hashtag = `#${niche.value} #fyp #ugc #kontencreator #racun`;
+CTA: "${cta}"
 
-let hook = [
-"Pernah ngerasa kulit kamu kusam?",
-"Kamu wajib tau ini!",
-"Stop scroll sekarang!",
-"Rahasia kulit glowing!"
-];
+Vertical, realistic UGC`;
 
-let cta = [
-"Klik keranjang sekarang!",
-"Cobain hari ini juga!",
-"Order sebelum kehabisan!",
-"Link ada di bio!"
-];
+let caption=`${hook}
 
-if(mode=="prompt") result.value=base;
-if(mode=="caption") result.value=caption;
-if(mode=="hashtag") result.value=hashtag;
-if(mode=="hook") result.value=hook[Math.floor(Math.random()*hook.length)];
-if(mode=="cta") result.value=cta[Math.floor(Math.random()*cta.length)];
+${product.value}
+${benefit.value}
 
+${cta}`;
+
+let hashtag=`#ugc #fyp #${product.value.replace(/\s/g,"")}`;
+window.data={
+prompt:prompt,
+caption:caption,
+hashtag:hashtag,
+hook:hook,
+cta:cta
+};
+
+result.value=window.data[tab];
 }
 
 function copyText(){
-result.select();
-document.execCommand("copy");
-alert("Tersalin!");
+navigator.clipboard.writeText(result.value);
+alert("Copied!");
 }
 
+/* THEME */
+function setTheme(t){
+if(t=="blue"){setColors("#00c6ff","#0072ff");}
+if(t=="green"){setColors("#00ff9d","#00b86b");}
+if(t=="red"){setColors("#ff4f4f","#ff005d");}
+if(t=="purple"){setColors("#ff4fd8","#7b4dff");}
+}
+function setColors(a,b){
+document.documentElement.style.setProperty('--accent1',a);
+document.documentElement.style.setProperty('--accent2',b);
+}
+function toggleLight(){
+document.body.classList.toggle("light");
+}
+
+/* BACKGROUND */
+function setBackground(input){
+if(input.files[0]){
+let r=new FileReader();
+r.onload=e=>{
+document.body.style.background=`url('${e.target.result}') center/cover fixed`;
+}
+r.readAsDataURL(input.files[0]);
+}
+}
+function resetBackground(){
+document.body.style.background=`linear-gradient(135deg,var(--bg1),var(--bg2),var(--bg1))`;
+}
 </script>
 
 </body>
-  </html>
+</html>
