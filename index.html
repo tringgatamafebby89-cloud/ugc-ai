@@ -75,6 +75,12 @@ display:flex;
 gap:10px;
 }
 .row>*{flex:1;}
+
+.scene-grid{
+display:grid;
+grid-template-columns:1fr 2fr;
+gap:8px;
+}
 </style>
 </head>
 
@@ -136,17 +142,19 @@ gap:10px;
 
 <h4>Scene + Durasi</h4>
 
-<input id="d1" placeholder="Durasi Scene 1 (5)">
+<div class="scene-grid">
+<input id="d1" placeholder="5s">
 <input id="s1" placeholder="Scene 1">
 
-<input id="d2" placeholder="Durasi Scene 2">
+<input id="d2" placeholder="5s">
 <input id="s2" placeholder="Scene 2">
 
-<input id="d3" placeholder="Durasi Scene 3">
+<input id="d3" placeholder="5s">
 <input id="s3" placeholder="Scene 3">
 
-<input id="d4" placeholder="Durasi Scene 4">
+<input id="d4" placeholder="5s">
 <input id="s4" placeholder="Scene 4">
+</div>
 
 <input id="totalDuration" placeholder="Total Durasi" readonly>
 
@@ -211,7 +219,6 @@ event.target.classList.add("active");
 }
 
 function generatePrompt(){
-
 let t1=parseInt(d1.value)||0;
 let t2=parseInt(d2.value)||0;
 let t3=parseInt(d3.value)||0;
@@ -228,10 +235,10 @@ Gaya: ${style.value}
 Lokasi: ${location.value}
 
 Scene:
-1. (${d1.value}s) ${s1.value}
-2. (${d2.value}s) ${s2.value}
-3. (${d3.value}s) ${s3.value}
-4. (${d4.value}s) ${s4.value}
+1. (${d1.value}) ${s1.value}
+2. (${d2.value}) ${s2.value}
+3. (${d3.value}) ${s3.value}
+4. (${d4.value}) ${s4.value}
 
 Total Durasi: ${total}s
 Video vertikal 9:16, natural, realistis.`;
@@ -240,7 +247,7 @@ result.value=txt;
 saveHistory(txt);
 }
 
-/* CAPTION */
+/* Caption */
 function generateCaption(){
 captionResult.value=
 `${capProduct.value}
@@ -250,7 +257,7 @@ Produk viral!
 Yuk checkout sekarang 🔥`;
 }
 
-/* HASHTAG */
+/* Hashtag */
 function generateHashtag(){
 hashtagResult.value=
 `#${hashProduct.value.replace(" ","")}
@@ -261,7 +268,7 @@ hashtagResult.value=
 #kontencreator`;
 }
 
-/* HOOK */
+/* Hook */
 let hooks=["Stop scroll!","Produk ini viral!","Seriusan bagus!","Wajib coba!","Aku baru nemu ini!"];
 function randomHook(){
 hookResult.value=hooks[Math.floor(Math.random()*hooks.length)];
@@ -273,7 +280,7 @@ function randomCTA(){
 ctaResult.value=ctas[Math.floor(Math.random()*ctas.length)];
 }
 
-/* COPY */
+/* Copy */
 function copyText(id){
 let el=document.getElementById(id);
 el.select();
@@ -281,7 +288,7 @@ document.execCommand("copy");
 alert("Disalin!");
 }
 
-/* HISTORY */
+/* History */
 function saveHistory(text){
 let h=JSON.parse(localStorage.getItem("history")||"[]");
 h.unshift(text);
