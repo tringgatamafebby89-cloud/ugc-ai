@@ -2,356 +2,314 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<title>Febby AI Studio PRO</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
-<link rel="icon" href="icon.png">
+<title>Febby AI Studio PRO+</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-*{box-sizing:border-box;font-family:Inter,Arial}
+:root{
+--bg:#140022;
+--card:#1f0036;
+--accent:#ff4fd8;
+--text:#ffffff;
+}
 body{
 margin:0;
-background:radial-gradient(circle at top,#4b0082,#120018);
-color:white;
+font-family:Arial, sans-serif;
+background:var(--bg);
+color:var(--text);
+transition:0.3s;
 }
 
-/* ===== Layout ===== */
-.app{
-display:flex;
-min-height:100vh;
-}
-
-/* ===== Sidebar ===== */
-.sidebar{
-width:70px;
-background:linear-gradient(180deg,#7a00ff,#ff4ecd);
-display:flex;
-flex-direction:column;
-align-items:center;
-padding:15px 5px;
-gap:18px;
-}
-
-.sidebtn{
-width:45px;
-height:45px;
-border-radius:12px;
-background:rgba(0,0,0,.35);
-display:flex;
-align-items:center;
-justify-content:center;
+/* MENU BUTTON */
+.menu-btn{
+position:fixed;
+top:15px;
+left:15px;
+font-size:26px;
 cursor:pointer;
-font-size:18px;
+z-index:2000;
 }
 
-.sidebtn:hover{background:#ffffff30}
-
-/* ===== Main ===== */
-.main{
-flex:1;
-padding:25px;
+/* SIDEBAR */
+.sidebar{
+position:fixed;
+top:0;
+left:-230px;
+width:230px;
+height:100%;
+background:#0d001a;
+padding:15px;
+transition:.3s;
+z-index:1500;
+overflow:auto;
 }
-
-.container{
-max-width:1100px;
-margin:auto;
-background:rgba(0,0,0,.35);
-border-radius:22px;
-padding:25px;
-box-shadow:0 0 40px #a855ff55;
-}
-
-/* ===== Header ===== */
-.header{
-text-align:center;
-margin-bottom:25px;
-}
-.header img{
-width:80px;
-margin-bottom:10px;
-}
-.header h1{
-margin:5px 0;
-font-size:32px;
-}
-.header p{
-opacity:.8;
-}
-
-/* ===== Form ===== */
-input,select,textarea,button{
+.sidebar h3{margin-top:0;}
+.sidebar button,input{
 width:100%;
-padding:12px;
-border-radius:10px;
+padding:10px;
+margin:5px 0;
 border:none;
-outline:none;
-font-size:14px;
-}
-
-textarea{min-height:90px;resize:vertical}
-
-.row2{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:10px;
-}
-.row3{
-display:grid;
-grid-template-columns:1fr 1fr 1fr;
-gap:10px;
-}
-
-.section{
-margin-top:18px;
-padding-top:15px;
-border-top:1px solid #ffffff22;
-}
-
-.section b{
-display:block;
-margin-bottom:8px;
-}
-
-/* ===== Check Grid ===== */
-.checkgrid{
-display:grid;
-grid-template-columns:repeat(2,1fr);
-gap:8px;
-}
-label{
-display:flex;
-align-items:center;
-gap:6px;
-font-size:14px;
-}
-
-/* ===== Buttons ===== */
-.btn{
-background:linear-gradient(90deg,#ff4ecd,#7a4bff);
+border-radius:8px;
+background:var(--accent);
 color:white;
 font-weight:bold;
 cursor:pointer;
 }
 
-.btn:hover{opacity:.9}
-
-/* ===== Tabs ===== */
-.tabs{
-display:flex;
-gap:6px;
-margin-top:15px;
+/* APP */
+.container{
+max-width:480px;
+margin:60px auto;
+background:var(--card);
+padding:20px;
+border-radius:18px;
+box-shadow:0 0 25px var(--accent);
 }
-.tab{
-flex:1;
-text-align:center;
+h1{text-align:center;}
+input,select,textarea,button{
+width:100%;
 padding:10px;
-border-radius:10px;
-background:#2b0040;
+margin-top:6px;
+border-radius:8px;
+border:none;
+}
+textarea{min-height:80px;}
+.row{display:flex;gap:10px;}
+.row>*{flex:1;}
+
+button.main{
+background:linear-gradient(90deg,#ff4fd8,#7b4dff);
+color:white;
+font-weight:bold;
 cursor:pointer;
 }
-.tab.active{
-background:linear-gradient(90deg,#ff4ecd,#7a4bff);
-}
 
-/* ===== Output ===== */
-#output{
-margin-top:10px;
+.tabs{display:flex;gap:6px;margin-top:10px;}
+.tab{
+flex:1;
+background:#2b004a;
+padding:8px;
+border-radius:8px;
+text-align:center;
+cursor:pointer;
+}
+.tab.active{background:var(--accent);}
+
+#result{
+min-height:160px;
 background:white;
 color:black;
-padding:12px;
-border-radius:10px;
-min-height:140px;
-white-space:pre-wrap;
+padding:10px;
+border-radius:8px;
+margin-top:10px;
 }
 
-/* ===== Footer ===== */
-.footer{
-text-align:center;
-margin-top:15px;
-font-size:12px;
-opacity:.6;
-}
-
-/* ===== Responsive ===== */
-@media(max-width:600px){
-.row2,.row3{grid-template-columns:1fr}
-.sidebar{width:55px}
-}
+.footer{text-align:center;font-size:11px;color:#aaa;margin-top:10px;}
 </style>
 </head>
 
 <body>
 
-<div class="app">
+<div class="menu-btn" onclick="toggleSidebar()">☰</div>
 
 <!-- SIDEBAR -->
-<div class="sidebar">
-<div class="sidebtn">🏠</div>
-<div class="sidebtn">💡</div>
-<div class="sidebtn">🎥</div>
-<div class="sidebtn">⚙️</div>
+<div class="sidebar" id="sidebar">
+<h3>MENU</h3>
+<button onclick="goTo('home')">Home</button>
+<button onclick="goTo('idea')">Ide Konten</button>
+<button onclick="goTo('generator')">Generator</button>
+<button onclick="goTo('history')">History</button>
+
+<h3>TEMA</h3>
+<button onclick="setTheme('#140022')">Ungu</button>
+<button onclick="setTheme('#001b2e')">Biru</button>
+<button onclick="setTheme('#002b1b')">Hijau</button>
+
+<h3>BACKGROUND</h3>
+<input type="file" accept="image/*" onchange="setBG(this)">
+<button onclick="resetBG()">Reset BG</button>
 </div>
 
-<!-- MAIN -->
-<div class="main">
+<div class="container" id="home">
+<h1>Febby AI Studio PRO+</h1>
 
-<div class="container">
-
-<div class="header">
-<img src="Logo.png">
-<h1>Febby AI Studio PRO</h1>
-<p>UGC Ultimate Creator Engine</p>
-</div>
-
-<!-- ===== IDE KONTEN ===== -->
-<div class="section">
-<b>Generator Ide Konten</b>
-<div class="row2">
-<select id="ideaNiche">
+<!-- IDE -->
+<div id="idea">
+<h3>Generator Ide</h3>
+<select id="ideaType">
 <option>Skincare</option>
 <option>Fashion</option>
 <option>Food</option>
-<option>Gadget</option>
-<option>Beauty</option>
+<option>Affiliate</option>
 </select>
-<button class="btn" onclick="genIdea()">Generate Ide</button>
-</div>
-<input id="ideaResult" placeholder="Ide akan muncul di sini">
+<button class="main" onclick="generateIdea()">Generate Ide</button>
+<input id="ideaResult">
 </div>
 
-<!-- ===== FORM ===== -->
-<div class="section">
-<b>Detail Produk</b>
-<div class="row2">
-<select id="language">
-<option>Indonesia</option>
-<option>English</option>
-<option>Jawa</option>
-<option>Sunda</option>
-</select>
+<hr>
 
-<select id="niche">
-<option>Skincare</option>
-<option>Fashion</option>
-<option>Food</option>
-<option>Gadget</option>
+<!-- GENERATOR -->
+<div id="generator">
+
+<select id="template">
+<option>Review Produk</option>
+<option>Before After</option>
+<option>Unboxing</option>
+<option>Tutorial</option>
+<option>Testimoni</option>
 </select>
-</div>
 
 <input id="product" placeholder="Nama Produk">
-<textarea id="benefit" placeholder="Manfaat Produk (boleh banyak baris)"></textarea>
+<textarea id="benefit" placeholder="Manfaat Produk"></textarea>
 
-<div class="row3">
-<select id="gender">
-<option>Wanita</option>
-<option>Pria</option>
-</select>
-
-<select id="hijab">
-<option>Non Hijab</option>
-<option>Hijab</option>
-</select>
-
+<div class="row">
 <select id="modelType">
 <option>Dengan Model</option>
 <option>Tangan Saja</option>
 <option>Tanpa Model</option>
 </select>
-</div>
-
-<input id="style" placeholder="Gaya Video (natural, cinematic, handheld, dll)">
 
 <select id="place">
 <option>Indoor Rumah</option>
 <option>Kamar Tidur</option>
-<option>Kamar Mandi</option>
 <option>Dapur</option>
-<option>Outdoor</option>
+<option>Kamar Mandi</option>
+<option>Ruang Tamu</option>
 <option>Kafe</option>
-<option>Kantor</option>
-</select>
-
-<select id="overlay">
-<option>Berbicara + Overlay</option>
-<option>Berbicara Saja</option>
-<option>Overlay Saja</option>
+<option>Outdoor</option>
+<option>Rak Produk</option>
 </select>
 </div>
 
-<!-- ===== EFFECT ===== -->
-<div class="section">
-<b>Efek Visual</b>
-<div class="checkgrid">
-<label><input type="checkbox" id="noFace">No Face</label>
-<label><input type="checkbox" id="closeUp">Close Up</label>
-<label><input type="checkbox" id="asmr">ASMR</label>
-<label><input type="checkbox" id="shake">Goyang Produk</label>
-<label><input type="checkbox" id="zoomIn">Zoom In</label>
-<label><input type="checkbox" id="zoomOut">Zoom Out</label>
-</div>
-</div>
-
-<!-- ===== SCENE ===== -->
-<div class="section">
-<b>Scene & Durasi (detik)</b>
-<div class="row2">
+<div class="row">
 <input id="d1" value="5">
 <input id="s1" placeholder="Scene 1">
+</div>
+<div class="row">
 <input id="d2" value="5">
 <input id="s2" placeholder="Scene 2">
+</div>
+<div class="row">
 <input id="d3" value="5">
 <input id="s3" placeholder="Scene 3">
+</div>
+<div class="row">
 <input id="d4" value="5">
 <input id="s4" placeholder="Scene 4">
 </div>
-<input id="total" placeholder="Total Durasi" readonly>
-</div>
 
-<button class="btn" onclick="generate()">Generate</button>
+<input id="total" readonly>
 
-<!-- ===== TABS ===== -->
+<button class="main" onclick="generate()">GENERATE</button>
+
 <div class="tabs">
-<div class="tab active" onclick="switchTab('prompt')">Prompt</div>
-<div class="tab" onclick="switchTab('caption')">Caption</div>
-<div class="tab" onclick="switchTab('hashtag')">Hashtag</div>
-<div class="tab" onclick="switchTab('hook')">Hook</div>
-<div class="tab" onclick="switchTab('cta')">CTA</div>
+<div class="tab active" onclick="setTab('prompt')">Prompt</div>
+<div class="tab" onclick="setTab('caption')">Caption</div>
+<div class="tab" onclick="setTab('hashtag')">Hashtag</div>
+<div class="tab" onclick="setTab('hook')">Hook</div>
+<div class="tab" onclick="setTab('cta')">CTA</div>
 </div>
 
-<div id="output"></div>
+<textarea id="result"></textarea>
+<button class="main" onclick="copyText()">COPY</button>
 
-<button class="btn" onclick="copyText()">Copy</button>
+</div>
+
+<!-- HISTORY -->
+<div id="history">
+<h3>History Prompt</h3>
+<textarea id="historyBox" readonly></textarea>
+</div>
 
 <div class="footer">Gratis • Local App • No API</div>
-
-</div>
-</div>
 </div>
 
 <script>
-let mode="prompt";
+let activeTab="prompt";
 
-function switchTab(m){
-mode=m;
+function toggleSidebar(){
+let sb=document.getElementById("sidebar");
+sb.style.left=(sb.style.left=="0px")?"-230px":"0px";
+}
+
+function goTo(id){
+document.getElementById(id).scrollIntoView({behavior:"smooth"});
+toggleSidebar();
+}
+
+function setTheme(color){
+document.documentElement.style.setProperty('--bg',color);
+}
+
+function setBG(i){
+let r=new FileReader();
+r.onload=e=>{
+document.body.style.background="url('"+e.target.result+"') center/cover fixed";
+}
+r.readAsDataURL(i.files[0]);
+}
+
+function resetBG(){
+document.body.style.background="var(--bg)";
+}
+
+function generateIdea(){
+let ideas=["Before After","Review Jujur","Unboxing","Cara Pakai","Produk Viral"];
+ideaResult.value=ideas[Math.floor(Math.random()*ideas.length)];
+}
+
+function setTab(tab){
+activeTab=tab;
 document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
 event.target.classList.add("active");
 }
 
-function genIdea(){
-let ideas=[
-"Review jujur",
-"Before After",
-"Tekstur close up",
-"First impression",
-"Routine pagi",
-"Routine malam"
-];
-ideaResult.value=ideas[Math.floor(Math.random()*ideas.length)];
+function generate(){
+let total=(+d1.value||0)+(+d2.value||0)+(+d3.value||0)+(+d4.value||0);
+document.getElementById("total").value=total+" detik";
+
+let hook="Stop scroll! Produk ini bikin kaget 😱";
+let cta="Klik keranjang sekarang!";
+
+let prompt=
+`${template.value} UGC Video
+Produk: ${product.value}
+Manfaat: ${benefit.value}
+Model: ${modelType.value}
+Lokasi: ${place.value}
+
+Scene1 (${d1.value}s): ${s1.value}
+Scene2 (${d2.value}s): ${s2.value}
+Scene3 (${d3.value}s): ${s3.value}
+Scene4 (${d4.value}s): ${s4.value}
+`;
+
+let caption=`${hook}
+${product.value}
+${cta}`;
+
+let hashtag="#ugc #fyp #"+product.value.replace(/\s/g,"");
+
+if(activeTab=="prompt") result.value=prompt;
+if(activeTab=="caption") result.value=caption;
+if(activeTab=="hashtag") result.value=hashtag;
+if(activeTab=="hook") result.value=hook;
+if(activeTab=="cta") result.value=cta;
+
+/* SAVE HISTORY */
+let old=localStorage.getItem("history")||"";
+localStorage.setItem("history",prompt+"\n\n"+old);
+historyBox.value=localStorage.getItem("history");
 }
 
-function generate(){
-let p=product.value;
-let b=benefit.value;
-let style=style.value;
-let place=document.getElementById("place").value;
-let overlay=document.getElementBy
+function copyText(){
+navigator.clipboard.writeText(result.value);
+alert("Disalin!");
+}
+
+/* LOAD HISTORY */
+historyBox.value=localStorage.getItem("history")||"";
+</script>
+
+</body>
+</html>
