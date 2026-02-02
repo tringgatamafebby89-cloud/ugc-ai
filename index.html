@@ -2,155 +2,117 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<title>Febby AI Studio PRO</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Febby AI Studio PRO+</title>
 
 <style>
 body{
 margin:0;
 font-family:Arial, sans-serif;
-background:linear-gradient(135deg,#140022,#3b0070,#7a1cff);
+background:linear-gradient(135deg,#16001f,#3a005f,#7b2cff);
 color:white;
 }
 
-.menu-btn{
-position:fixed;
-top:15px;
-left:15px;
-font-size:26px;
-cursor:pointer;
-z-index:2000;
-}
-
-.sidebar{
-position:fixed;
-top:0;
-left:-220px;
-width:220px;
-height:100%;
-background:#1a0033;
-padding:15px;
-transition:.3s;
-z-index:1500;
-}
-
-.sidebar button{
-width:100%;
-padding:10px;
-margin:6px 0;
-border:none;
-border-radius:8px;
-background:#ff4fd8;
-color:white;
-font-weight:bold;
-}
-
-.container{
-max-width:520px;
-margin:70px auto;
-background:#12001f;
+.wrapper{
+display:flex;
+justify-content:center;
+min-height:100vh;
 padding:20px;
-border-radius:18px;
-box-shadow:0 0 30px #9b00ff;
 }
 
-h1{text-align:center;}
+.card{
+width:100%;
+max-width:520px;
+background:rgba(0,0,0,0.6);
+border-radius:20px;
+padding:25px;
+box-shadow:0 0 25px #b94bff;
+}
+
+h1,h2{text-align:center;margin:5px;}
 
 input,select,textarea,button{
 width:100%;
-padding:10px;
-margin-top:6px;
-border-radius:8px;
+padding:12px;
+border-radius:10px;
 border:none;
-font-size:14px;
+margin-top:10px;
+font-size:15px;
 }
 
-textarea{min-height:80px;resize:vertical;}
+textarea{min-height:90px;}
 
 .row{display:flex;gap:10px;}
 .row>*{flex:1;}
 
-button.main{
-background:linear-gradient(90deg,#ff4fd8,#7b4dff);
+button{
+background:linear-gradient(90deg,#ff4fd8,#7b5cff);
 color:white;
 font-weight:bold;
+cursor:pointer;
 }
 
 .tabs{
 display:flex;
 gap:5px;
-margin-top:10px;
+margin-top:15px;
 }
 
-.tab{
+.tabs button{
 flex:1;
-background:#2a004f;
-padding:8px;
-border-radius:8px;
-text-align:center;
+background:#35004f;
 }
 
-.tab.active{background:#ff4fd8;}
+.tabs button.active{
+background:#ff4fd8;
+}
 
-#result{
-min-height:160px;
-background:white;
-color:black;
-padding:10px;
-border-radius:8px;
+.output{
+min-height:140px;
+}
+
+img.preview{
+width:100%;
 margin-top:10px;
+border-radius:10px;
+display:none;
 }
 
 .footer{
 text-align:center;
-font-size:11px;
-margin-top:10px;
-color:#aaa;
+font-size:12px;
+opacity:0.7;
+margin-top:15px;
 }
 </style>
 </head>
 
 <body>
 
-<div class="menu-btn" onclick="toggleSidebar()">☰</div>
+<div class="wrapper">
+<div class="card">
 
-<div class="sidebar" id="sidebar">
-<button onclick="goTo('home')">Home</button>
-<button onclick="goTo('idea')">Ide</button>
-<button onclick="goTo('generator')">Generator</button>
-</div>
-
-<div class="container" id="home">
-
-<h1>Febby AI Studio PRO</h1>
+<h1>Febby AI Studio PRO+</h1>
+<h2>UGC Prompt Generator</h2>
 
 <!-- IDE -->
-<div id="idea">
-<h3>Generator Ide Konten</h3>
-<select id="ideaType">
+<h3>Generator Ide</h3>
+<select id="ideaNiche">
 <option>Skincare</option>
 <option>Fashion</option>
 <option>Food</option>
 <option>Elektronik</option>
-<option>Affiliate</option>
 </select>
-<button class="main" onclick="generateIdea()">Generate Ide</button>
-<input id="ideaResult">
-</div>
+
+<button onclick="generateIdea()">Generate Ide</button>
+<textarea id="ideaResult"></textarea>
 
 <hr>
 
-<!-- GENERATOR -->
-<div id="generator">
+<!-- PRODUK -->
+<h3>Detail Produk</h3>
 
-<select id="niche">
-<option>Skincare</option>
-<option>Fashion</option>
-<option>Food</option>
-<option>Elektronik</option>
-</select>
+<input id="productName" placeholder="Nama Produk">
 
-<input id="product" placeholder="Nama Produk">
 <textarea id="benefit" placeholder="Manfaat Produk"></textarea>
 
 <div class="row">
@@ -166,81 +128,51 @@ color:#aaa;
 </select>
 </div>
 
-<input id="style" placeholder="Gaya Video (natural, handheld, cinematic)">
-
-<select id="place">
+<select id="location">
 <option>Indoor Rumah</option>
 <option>Kamar Tidur</option>
 <option>Kamar Mandi</option>
 <option>Dapur</option>
 <option>Ruang Tamu</option>
-<option>Kafe</option>
 <option>Outdoor</option>
-<option>Rak Produk</option>
-</select>
-
-<!-- ===== DROPDOWN BARU ===== -->
-
-<h3>Referensi Tambahan</h3>
-
-<select id="refProduk">
-<option value="image">Gunakan Foto Produk</option>
-<option value="text">Tanpa Foto Produk</option>
-</select>
-
-<select id="refModel">
-<option value="photo">Gunakan Foto Model</option>
-<option value="ai">AI Generate Model</option>
-<option value="none">Tanpa Model</option>
-</select>
-
-<select id="modelView">
-<option value="face">Dengan Wajah</option>
-<option value="noface">Tanpa Wajah</option>
-<option value="hands">Tangan Saja</option>
-</select>
-
-<select id="cameraAngle">
-<option>Front View</option>
-<option>Side View</option>
-<option>Top View</option>
-<option>Close Up</option>
-</select>
-
-<select id="cameraMove">
-<option>Static</option>
-<option>Slow Pan</option>
-<option>Zoom In</option>
-<option>Zoom Out</option>
-</select>
-
-<select id="productMove">
-<option>Diam</option>
-<option>Diputar</option>
-<option>Digoyang</option>
-</select>
-
-<select id="lighting">
-<option>Natural Light</option>
-<option>Soft Light</option>
-<option>Bright Studio</option>
-</select>
-
-<select id="backgroundExtra">
-<option>Indoor Rumah</option>
-<option>Kamar Tidur</option>
-<option>Meja Produk</option>
-<option>Bathroom</option>
 <option>Cafe</option>
-<option>Outdoor</option>
+<option>Studio</option>
 </select>
 
-<select id="styleVideoExtra">
+<select id="style">
 <option>Natural UGC</option>
 <option>Cinematic</option>
+<option>Handheld</option>
 <option>Review</option>
-<option>Unboxing</option>
+<option>Testimoni</option>
 </select>
+
+<!-- FOTO PRODUK -->
+<h3>Foto Produk</h3>
+<select id="productImageType">
+<option value="none">Tidak Pakai Foto Produk</option>
+<option value="upload">Upload Foto Produk</option>
+</select>
+
+<input type="file" id="productImage" accept="image/*" onchange="previewProduct(this)">
+<img id="productPreview" class="preview">
+
+<!-- FOTO MODEL -->
+<h3>Foto Model</h3>
+<select id="modelImageType">
+<option value="none">Tidak Pakai Foto Model</option>
+<option value="upload">Upload Foto Model</option>
+</select>
+
+<input type="file" id="modelImage" accept="image/*" onchange="previewModel(this)">
+<img id="modelPreview" class="preview">
+
+<!-- EFEK -->
+<h3>Efek Video</h3>
+<label><input type="checkbox" id="noface"> No Face</label>
+<label><input type="checkbox" id="closeup"> Close Up</label>
+<label><input type="checkbox" id="shake"> Goyang Produk</label>
+<label><input type="checkbox" id="zoomin"> Zoom In</label>
 
 <!-- SCENE -->
 <h3>Scene & Durasi</h3>
@@ -249,118 +181,130 @@ color:#aaa;
 <input id="d1" value="5">
 <input id="s1" placeholder="Scene 1">
 </div>
+
 <div class="row">
 <input id="d2" value="5">
 <input id="s2" placeholder="Scene 2">
 </div>
+
 <div class="row">
 <input id="d3" value="5">
 <input id="s3" placeholder="Scene 3">
 </div>
+
 <div class="row">
 <input id="d4" value="5">
 <input id="s4" placeholder="Scene 4">
 </div>
 
-<input id="total" readonly>
+<input id="total" readonly placeholder="Total Durasi">
 
-<button class="main" onclick="generate()">GENERATE</button>
+<button onclick="generateAll()">GENERATE</button>
 
+<!-- TABS -->
 <div class="tabs">
-<div class="tab active" onclick="setTab('prompt')">Prompt</div>
-<div class="tab" onclick="setTab('caption')">Caption</div>
-<div class="tab" onclick="setTab('hashtag')">Hashtag</div>
-<div class="tab" onclick="setTab('hook')">Hook</div>
-<div class="tab" onclick="setTab('cta')">CTA</div>
+<button class="active" onclick="setTab('prompt')">Prompt</button>
+<button onclick="setTab('caption')">Caption</button>
+<button onclick="setTab('hashtag')">Hashtag</button>
+<button onclick="setTab('hook')">Hook</button>
+<button onclick="setTab('cta')">CTA</button>
 </div>
 
-<textarea id="result"></textarea>
-<button class="main" onclick="copyText()">COPY</button>
-
-</div>
+<textarea id="result" class="output"></textarea>
+<button onclick="copyResult()">COPY</button>
 
 <div class="footer">Gratis • Local App • No API</div>
 
+</div>
 </div>
 
 <script>
 
 let activeTab="prompt";
 
-/* SIDEBAR */
-function toggleSidebar(){
-let sb=document.getElementById("sidebar");
-sb.style.left=(sb.style.left=="0px")?"-220px":"0px";
-}
-function goTo(id){
-document.getElementById(id).scrollIntoView({behavior:"smooth"});
-toggleSidebar();
+function setTab(tab){
+activeTab=tab;
 }
 
-/* IDE */
 function generateIdea(){
-let ideas=["Before After","Review Jujur","Tekstur Close Up","Cara Pakai","Produk Viral"];
+let ideas=[
+"Before After",
+"Tekstur Close Up",
+"Review Jujur",
+"Unboxing",
+"Cara Pakai"
+];
 ideaResult.value=ideas[Math.floor(Math.random()*ideas.length)];
 }
 
-/* TAB */
-function setTab(t){
-activeTab=t;
-document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
-event.target.classList.add("active");
+/* PREVIEW FOTO */
+function previewProduct(input){
+let img=document.getElementById("productPreview");
+let file=input.files[0];
+if(!file)return;
+let reader=new FileReader();
+reader.onload=function(){
+img.src=reader.result;
+img.style.display="block";
+}
+reader.readAsDataURL(file);
 }
 
-/* EXTRA PROMPT */
-function getExtraPrompt(){
-let t="";
-
-if(refProduk.value=="image")
-t+="Use uploaded product image as main reference. Do not change shape, color, or design. ";
-else
-t+="Create product based on description. ";
-
-if(refModel.value=="photo") t+="Use uploaded model image as reference. ";
-if(refModel.value=="ai") t+="Create realistic human model. ";
-if(refModel.value=="none") t+="No human visible. ";
-
-if(modelView.value=="face") t+="Model face visible. ";
-if(modelView.value=="noface") t+="Face not visible. ";
-if(modelView.value=="hands") t+="Only hands holding product. ";
-
-t+="Camera angle: "+cameraAngle.value+". ";
-t+="Camera movement: "+cameraMove.value+". ";
-t+="Product movement: "+productMove.value+". ";
-t+="Lighting: "+lighting.value+". ";
-t+="Background: "+backgroundExtra.value+". ";
-t+="Style: "+styleVideoExtra.value+". ";
-
-return t;
+function previewModel(input){
+let img=document.getElementById("modelPreview");
+let file=input.files[0];
+if(!file)return;
+let reader=new FileReader();
+reader.onload=function(){
+img.src=reader.result;
+img.style.display="block";
+}
+reader.readAsDataURL(file);
 }
 
-/* GENERATE */
-function generate(){
-let total=(+d1.value||0)+(+d2.value||0)+(+d3.value||0)+(+d4.value||0);
-document.getElementById("total").value=total+" detik";
+function generateAll(){
+
+let totalDur=
+(+d1.value||0)+(+d2.value||0)+(+d3.value||0)+(+d4.value||0);
+total.value=totalDur+" detik";
+
+let effects=[];
+if(noface.checked) effects.push("no face");
+if(closeup.checked) effects.push("close-up");
+if(shake.checked) effects.push("shake product");
+if(zoomin.checked) effects.push("zoom in");
+
+let productPhotoInfo="";
+let modelPhotoInfo="";
+
+if(productImageType.value=="upload" && productImage.files.length>0){
+productPhotoInfo="Use uploaded product image as main reference. Do not change shape or color.";
+}
+
+if(modelImageType.value=="upload" && modelImage.files.length>0){
+modelPhotoInfo="Use uploaded model image as reference.";
+}
 
 let prompt=
-`${niche.value} UGC VIDEO
-Product: ${product.value}
-Benefit: ${benefit.value}
+`Create ${style.value} video.
+Product: ${productName.value}
+Benefits: ${benefit.value}
 Model: ${modelType.value} ${gender.value}
-Style: ${style.value}
-Location: ${place.value}
+Location: ${location.value}
+Effects: ${effects.join(",")}
+${productPhotoInfo}
+${modelPhotoInfo}
 
 Scene1 (${d1.value}s): ${s1.value}
 Scene2 (${d2.value}s): ${s2.value}
 Scene3 (${d3.value}s): ${s3.value}
 Scene4 (${d4.value}s): ${s4.value}
 
-${getExtraPrompt()}
-`;
+Include hook, caption, CTA inside video.`;
 
-let caption=`${product.value} bikin nagih 😍\nWajib coba!`;
-let hashtag=`#${niche.value} #ugc #fyp`;
-let hook=`Stop scroll! Ini penting 😱`;
+let caption=`${productName.value} bikin kaget 😍`;
+let hashtag=`#ugc #fyp #reviewproduk`;
+let hook=`Stop scroll!`;
 let cta=`Klik keranjang sekarang!`;
 
 if(activeTab=="prompt") result.value=prompt;
@@ -370,13 +314,12 @@ if(activeTab=="hook") result.value=hook;
 if(activeTab=="cta") result.value=cta;
 }
 
-/* COPY */
-function copyText(){
-result.select();
-document.execCommand("copy");
+function copyResult(){
+navigator.clipboard.writeText(result.value);
 alert("Disalin!");
 }
+
 </script>
 
 </body>
-  </html>
+</html>
