@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <title>Febby AI Studio PRO</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="icon" href="icon.png">
 
 <style>
 :root{
@@ -15,16 +14,18 @@
 --accent2:#7b4dff;
 --text:#ffffff;
 }
-
 body{
 margin:0;
 font-family:Arial;
 background:linear-gradient(135deg,var(--bg1),var(--bg2),var(--bg1));
 color:var(--text);
-transition:.3s;
 }
-
-/* Sidebar */
+.light{
+--bg1:#f2f2f2;
+--bg2:#d6d6d6;
+--card:#ffffff;
+--text:#000000;
+}
 .sidebar{
 position:fixed;
 left:-260px;
@@ -32,32 +33,29 @@ top:0;
 width:260px;
 height:100%;
 background:#0f001c;
-padding:20px;
+padding:15px;
 transition:.3s;
-z-index:10;
 overflow:auto;
+z-index:10;
 }
 .menuBtn{
 position:fixed;
-top:15px;
-left:15px;
+top:10px;
+left:10px;
 font-size:26px;
 cursor:pointer;
 z-index:20;
 }
-.sidebar h3{margin-top:18px;}
-.sidebar button, .sidebar select, .sidebar input{
+.sidebar button,.sidebar select,.sidebar input{
 width:100%;
-margin:6px 0;
-padding:10px;
+margin:5px 0;
+padding:8px;
 border:none;
 border-radius:8px;
 background:linear-gradient(90deg,var(--accent1),var(--accent2));
 color:white;
 font-weight:bold;
 }
-
-/* App */
 .container{
 max-width:1100px;
 margin:auto;
@@ -65,62 +63,51 @@ padding:40px 15px;
 }
 .card{
 background:var(--card);
-padding:25px;
-border-radius:20px;
-box-shadow:0 0 25px var(--accent2);
+padding:20px;
+border-radius:18px;
+box-shadow:0 0 20px var(--accent2);
 }
 h1{text-align:center;}
-
 select,input,textarea{
 width:100%;
-padding:10px;
+padding:8px;
+margin-top:6px;
 border-radius:8px;
 border:none;
-margin-top:8px;
 }
-textarea{min-height:90px;}
-
+textarea{min-height:80px;}
 .row{
 display:grid;
 grid-template-columns:1fr 1fr;
-gap:10px;
+gap:8px;
 }
-
 button.main{
 width:100%;
-padding:12px;
-margin-top:12px;
+padding:10px;
+margin-top:10px;
 border:none;
 border-radius:10px;
 background:linear-gradient(90deg,var(--accent1),var(--accent2));
 color:white;
-font-size:16px;
+font-size:15px;
 font-weight:bold;
 }
-
 .tabs{
 display:flex;
-gap:6px;
-margin-top:10px;
+gap:5px;
+margin-top:8px;
 }
 .tabs button{
 flex:1;
-padding:8px;
 border:none;
-border-radius:8px;
+padding:6px;
+border-radius:6px;
 background:#2b0050;
 color:white;
 }
 .tabs button.active{background:var(--accent1);}
-
-#result{height:220px;margin-top:10px;}
-
-.light{
---bg1:#f0f0f0;
---bg2:#d0d0d0;
---card:#ffffff;
---text:#000000;
-}
+#result{height:220px;margin-top:8px;}
+label{display:block;font-size:13px;}
 </style>
 </head>
 
@@ -130,9 +117,9 @@ color:white;
 
 <div id="sidebar" class="sidebar">
 <h3>PLATFORM</h3>
-<button onclick="setPlatform('TikTok')">TikTok</button>
-<button onclick="setPlatform('Shopee')">Shopee</button>
-<button onclick="setPlatform('YouTube Shorts')">YouTube Shorts</button>
+<button onclick="platform='TikTok'">TikTok</button>
+<button onclick="platform='Shopee'">Shopee</button>
+<button onclick="platform='YouTube Shorts'">YouTube Shorts</button>
 
 <h3>TEMA</h3>
 <select onchange="setTheme(this.value)">
@@ -141,26 +128,24 @@ color:white;
 <option value="green">Hijau</option>
 <option value="red">Merah</option>
 </select>
-<button onclick="toggleLight()">Light / Dark</button>
+<button onclick="document.body.classList.toggle('light')">Light/Dark</button>
 
 <h3>BACKGROUND</h3>
-<input type="file" accept="image/*" onchange="setBackground(this)">
-<button onclick="resetBackground()">Reset</button>
+<input type="file" accept="image/*" onchange="setBG(this)">
+<button onclick="resetBG()">Reset BG</button>
 </div>
 
-<div class="container" id="app">
+<div class="container">
 <div class="card">
 
 <h1>Febby AI Studio PRO</h1>
 
-<!-- PRO PRESET -->
 <select id="template">
 <option>Skincare Review</option>
 <option>Before After</option>
 <option>Unboxing</option>
-<option>Testimoni</option>
 <option>Tutorial</option>
-<option>Problem Solution</option>
+<option>Testimoni</option>
 </select>
 
 <select id="tone">
@@ -168,7 +153,6 @@ color:white;
 <option>Friendly</option>
 <option>Energetic</option>
 <option>Confident</option>
-<option>Professional</option>
 </select>
 
 <select id="objective">
@@ -179,20 +163,35 @@ color:white;
 </select>
 
 <input id="product" placeholder="Nama Produk">
-<textarea id="benefit" placeholder="Manfaat Produk (boleh enter)"></textarea>
+<textarea id="benefit" placeholder="Manfaat Produk"></textarea>
 
 <div class="row">
 <select id="gender">
 <option>Wanita</option>
 <option>Pria</option>
 </select>
+
 <select id="hijab">
 <option>Non Hijab</option>
 <option>Hijab</option>
 </select>
 </div>
 
-<input id="style" placeholder="Gaya video (natural, handheld, cinematic)">
+<select id="modelType">
+<option>Dengan Model</option>
+<option>Tangan Saja</option>
+<option>Tanpa Model</option>
+</select>
+
+<label><input type="checkbox" id="noFace"> No Face</label>
+<label><input type="checkbox" id="closeUp"> Close Up</label>
+<label><input type="checkbox" id="asmr"> ASMR</label>
+
+<label><input type="checkbox" id="shake"> Goyang Produk</label>
+<label><input type="checkbox" id="zoomIn"> Zoom In</label>
+<label><input type="checkbox" id="zoomOut"> Zoom Out</label>
+<label><input type="checkbox" id="pan"> Pan</label>
+<label><input type="checkbox" id="tilt"> Tilt</label>
 
 <select id="resolution">
 <option>9:16 (1080x1920)</option>
@@ -201,13 +200,12 @@ color:white;
 </select>
 
 <select id="quality">
-<option>HD 720p</option>
-<option>Full HD 1080p</option>
+<option>HD</option>
+<option>Full HD</option>
 <option>4K</option>
 </select>
 
 <h3>Scene & Durasi</h3>
-
 <div class="row"><input id="d1" value="5"><input id="s1" placeholder="Scene 1"></div>
 <div class="row"><input id="d2" value="5"><input id="s2" placeholder="Scene 2"></div>
 <div class="row"><input id="d3" value="5"><input id="s3" placeholder="Scene 3"></div>
@@ -228,8 +226,6 @@ color:white;
 <textarea id="result"></textarea>
 <button class="main" onclick="copyText()">COPY</button>
 
-<p style="text-align:center;font-size:12px">Gratis • Local App • No API</p>
-
 </div>
 </div>
 
@@ -242,26 +238,59 @@ const ctas=["Klik keranjang sekarang!","Checkout sekarang!","Buruan order!"];
 
 function toggleMenu(){
 let sb=document.getElementById("sidebar");
-sb.style.left = sb.style.left=="0px" ? "-260px":"0px";
+sb.style.left = sb.style.left=="0px"?"-260px":"0px";
 }
 
-function setPlatform(p){platform=p;}
+function setTheme(t){
+if(t=="blue"){setColor("#00c6ff","#0072ff");}
+if(t=="green"){setColor("#00ff9d","#00b86b");}
+if(t=="red"){setColor("#ff4f4f","#ff005d");}
+if(t=="purple"){setColor("#ff4fd8","#7b4dff");}
+}
+function setColor(a,b){
+document.documentElement.style.setProperty('--accent1',a);
+document.documentElement.style.setProperty('--accent2',b);
+}
 
-function setTab(t,btn){
+function setBG(i){
+let r=new FileReader();
+r.onload=e=>{document.body.style.background=`url('${e.target.result}') center/cover fixed`;}
+r.readAsDataURL(i.files[0]);
+}
+function resetBG(){
+document.body.style.background=`linear-gradient(135deg,var(--bg1),var(--bg2),var(--bg1))`;
+}
+
+function setTab(t,b){
 tab=t;
-document.querySelectorAll(".tabs button").forEach(b=>b.classList.remove("active"));
-btn.classList.add("active");
+document.querySelectorAll(".tabs button").forEach(x=>x.classList.remove("active"));
+b.classList.add("active");
 }
 
 function generate(){
-let d1v=+d1.value||0,d2v=+d2.value||0,d3v=+d3.value||0,d4v=+d4.value||0;
-total.value=(d1v+d2v+d3v+d4v)+" detik";
+let tot=(+d1.value)+(+d2.value)+(+d3.value)+(+d4.value);
+total.value=tot+" detik";
+
+let modelInst="";
+if(modelType.value=="Tangan Saja") modelInst="hands only";
+if(modelType.value=="Tanpa Model") modelInst="product only";
+if(modelType.value=="Dengan Model") modelInst="human model";
+
+if(noFace.checked) modelInst+=", no face";
+if(closeUp.checked) modelInst+=", close up";
+if(asmr.checked) modelInst+=", ASMR";
+
+let motion="";
+if(shake.checked) motion+=" shake product,";
+if(zoomIn.checked) motion+=" zoom in,";
+if(zoomOut.checked) motion+=" zoom out,";
+if(pan.checked) motion+=" pan camera,";
+if(tilt.checked) motion+=" tilt camera,";
 
 let hook=hooks[Math.floor(Math.random()*hooks.length)];
 let cta=ctas[Math.floor(Math.random()*ctas.length)];
 
-let prompt=
-`Platform: ${platform}
+let prompt=`Platform: ${platform}
 Template: ${template.value}
 Objective: ${objective.value}
 Tone: ${tone.value}
@@ -269,74 +298,33 @@ Tone: ${tone.value}
 Produk: ${product.value}
 Manfaat: ${benefit.value}
 
-Model: ${gender.value} ${hijab.value}
-Style: ${style.value}
+Model: ${modelInst}
+Detail: ${gender.value} ${hijab.value}
 
 Resolusi: ${resolution.value}
 Quality: ${quality.value}
 
-HOOK: "${hook}"
+HOOK: ${hook}
 
-Scene1 (${d1v}s): ${s1.value}
-Scene2 (${d2v}s): ${s2.value}
-Scene3 (${d3v}s): ${s3.value}
-Scene4 (${d4v}s): ${s4.value}
+Scene1 (${d1.value}s): ${s1.value}
+Scene2 (${d2.value}s): ${s2.value}
+Scene3 (${d3.value}s): ${s3.value}
+Scene4 (${d4.value}s): ${s4.value}
 
-CTA: "${cta}"
+Motion: ${motion}
+CTA: ${cta}
+Vertical realistic UGC`;
 
-Vertical, realistic UGC`;
+let caption=`${hook}\n${product.value}\n${benefit.value}\n${cta}`;
+let hashtag="#ugc #fyp #"+product.value.replace(/\s/g,"");
 
-let caption=`${hook}
-
-${product.value}
-${benefit.value}
-
-${cta}`;
-
-let hashtag=`#ugc #fyp #${product.value.replace(/\s/g,"")}`;
-window.data={
-prompt:prompt,
-caption:caption,
-hashtag:hashtag,
-hook:hook,
-cta:cta
-};
-
+window.data={prompt,caption,hashtag,hook,cta};
 result.value=window.data[tab];
 }
 
 function copyText(){
 navigator.clipboard.writeText(result.value);
 alert("Copied!");
-}
-
-/* THEME */
-function setTheme(t){
-if(t=="blue"){setColors("#00c6ff","#0072ff");}
-if(t=="green"){setColors("#00ff9d","#00b86b");}
-if(t=="red"){setColors("#ff4f4f","#ff005d");}
-if(t=="purple"){setColors("#ff4fd8","#7b4dff");}
-}
-function setColors(a,b){
-document.documentElement.style.setProperty('--accent1',a);
-document.documentElement.style.setProperty('--accent2',b);
-}
-function toggleLight(){
-document.body.classList.toggle("light");
-}
-
-/* BACKGROUND */
-function setBackground(input){
-if(input.files[0]){
-let r=new FileReader();
-r.onload=e=>{
-document.body.style.background=`url('${e.target.result}') center/cover fixed`;
-}
-r.readAsDataURL(input.files[0]);
-}
-}
-function resetBackground(){
-document.body.style.background=`linear-gradient(135deg,var(--bg1),var(--bg2),var(--bg1))`;
 }
 </script>
 
