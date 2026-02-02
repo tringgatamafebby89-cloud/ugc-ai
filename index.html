@@ -11,7 +11,7 @@ body{
   font-family:Arial;
   padding:20px;
 }
-input, select, textarea, button{
+input,select,textarea,button{
   width:100%;
   margin:8px 0;
   padding:10px;
@@ -20,15 +20,10 @@ input, select, textarea, button{
 }
 button{
   background:#22c55e;
-  color:black;
+  font-size:16px;
   font-weight:bold;
 }
-textarea{
-  height:220px;
-}
-h2{
-  text-align:center;
-}
+textarea{height:220px;}
 </style>
 
 </head>
@@ -37,28 +32,25 @@ h2{
 <h2>UGC AI Generator</h2>
 
 <input id="product" placeholder="Nama Produk">
-
-<textarea id="desc" placeholder="Deskripsi Produk"></textarea>
-
+<input id="desc" placeholder="Deskripsi Produk / Manfaat">
 <input id="style" placeholder="Gaya Video (natural, handheld, indoor)">
 
 <select id="gender">
-  <option value="woman">Wanita</option>
-  <option value="man">Pria</option>
+  <option value="female">Wanita</option>
+  <option value="male">Pria</option>
   <option value="child">Anak</option>
 </select>
 
 <select id="hijab">
-  <option value="non-hijab">Tanpa Hijab</option>
+  <option value="non-hijab">Non Hijab</option>
   <option value="hijab">Hijab</option>
 </select>
 
 <button onclick="generate()">Generate Prompt</button>
 
-<textarea id="result" placeholder="Prompt muncul di sini..."></textarea>
+<textarea id="result"></textarea>
 
 <script>
-
 function generate(){
 
 let p = product.value;
@@ -69,18 +61,13 @@ let h = hijab.value;
 
 let modelText = "";
 
-if(g=="woman"){
-  modelText = "Adult woman";
-}
-if(g=="man"){
-  modelText = "Adult man";
-}
-if(g=="child"){
-  modelText = "Child";
-}
+if(g=="female") modelText="Adult woman";
+if(g=="male") modelText="Adult man";
+if(g=="child") modelText="Child";
 
-if(h=="hijab"){
-  modelText += ", wearing hijab";
+if(g=="female"){
+  if(h=="hijab") modelText += " wearing hijab";
+  else modelText += " no hijab";
 }
 
 let prompt = `
@@ -90,7 +77,7 @@ ${modelText}
 SCENE 1:
 Close-up product on table.
 Hands enter frame and pick up product.
-Lighting natural, realistic.
+Lighting natural.
 
 SCENE 2:
 Hands rotating product slowly.
@@ -112,13 +99,11 @@ Vertical 9:16
 Natural handheld
 Indoor lighting
 No face, hands only
-Use uploaded product image as reference
 `;
 
-result.value = prompt;
+document.getElementById("result").value = prompt;
 
 }
-
 </script>
 
 </body>
