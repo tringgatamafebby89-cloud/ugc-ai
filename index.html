@@ -5,15 +5,14 @@
 <title>Febby AI Studio</title>
 
 <link rel="icon" href="icon.png">
-<link rel="apple-touch-icon" href="icon.png">
 
 <style>
-*{box-sizing:border-box;font-family:Arial,sans-serif;}
+*{box-sizing:border-box;font-family:Arial;}
 
 body{
 margin:0;
 min-height:100vh;
-background:linear-gradient(135deg,#0a0018,#2b0052,#5b0cff);
+background:linear-gradient(135deg,#12001f,#2b0052,#6a00ff);
 display:flex;
 justify-content:center;
 padding:20px;
@@ -22,21 +21,20 @@ color:white;
 
 .container{
 width:100%;
-max-width:480px;
-background:rgba(20,0,40,0.95);
+max-width:720px;
+background:rgba(20,0,40,.95);
 border-radius:20px;
-padding:18px;
-box-shadow:0 0 30px rgba(255,0,255,.35);
+padding:20px;
+box-shadow:0 0 35px rgba(255,0,255,.35);
 }
 
 .logo{
-width:110px;
+width:120px;
 display:block;
 margin:auto;
 }
 
-h1{text-align:center;margin:8px 0;}
-h3{text-align:center;font-weight:normal;opacity:.8;margin-bottom:15px;}
+h1,h3{text-align:center;margin:6px 0;}
 
 input,select,textarea,button{
 width:100%;
@@ -47,23 +45,41 @@ margin-top:8px;
 font-size:14px;
 }
 
-textarea{min-height:140px;resize:none;}
+textarea{min-height:140px;}
 
-.row{display:flex;gap:8px;}
-.scene-row{display:grid;grid-template-columns:1fr 3fr;gap:8px;}
+.row{display:flex;gap:10px;}
+.scene-row{display:grid;grid-template-columns:1fr 3fr;gap:10px;}
 
 button{
 background:linear-gradient(90deg,#ff4fd8,#7a3cff);
 color:white;
 font-weight:bold;
+cursor:pointer;
 }
 
-footer{
-text-align:center;
-font-size:12px;
-opacity:.6;
+.tabs{
+display:flex;
+gap:6px;
 margin-top:10px;
+flex-wrap:wrap;
 }
+
+.tab{
+flex:1;
+text-align:center;
+padding:8px;
+background:#3a0066;
+border-radius:8px;
+cursor:pointer;
+font-size:13px;
+}
+
+.tab.active{background:#ff4fd8;}
+
+.output{display:none;}
+.output.active{display:block;}
+
+footer{text-align:center;font-size:12px;opacity:.6;margin-top:10px;}
 </style>
 </head>
 
@@ -81,7 +97,6 @@ margin-top:10px;
 <option>Fashion</option>
 <option>Food</option>
 <option>Elektronik</option>
-<option>Daily Product</option>
 </select>
 
 <input id="produk" placeholder="Nama Produk">
@@ -106,121 +121,82 @@ margin-top:10px;
 <option>Kamar</option>
 <option>Dapur</option>
 <option>Outdoor</option>
-<option>Kantor</option>
 </select>
 
 <select id="delivery">
 <option>Berbicara + Overlay</option>
 <option>Model Berbicara</option>
-<option>Teks Overlay Saja</option>
+<option>Teks Overlay</option>
 </select>
 
 <h4>Scene + Durasi (detik)</h4>
 
 <div class="scene-row">
-<input type="number" id="d1" placeholder="5">
-<input id="s1" placeholder="Scene 1">
-<input type="number" id="d2" placeholder="5">
-<input id="s2" placeholder="Scene 2">
-<input type="number" id="d3" placeholder="5">
-<input id="s3" placeholder="Scene 3">
-<input type="number" id="d4" placeholder="5">
-<input id="s4" placeholder="Scene 4">
+<input type="number" id="d1" value="5"><input id="s1" placeholder="Scene 1">
+<input type="number" id="d2" value="5"><input id="s2" placeholder="Scene 2">
+<input type="number" id="d3" value="5"><input id="s3" placeholder="Scene 3">
+<input type="number" id="d4" value="5"><input id="s4" placeholder="Scene 4">
 </div>
 
 <input id="total" placeholder="Total Durasi" readonly>
 
-<button onclick="generate()">Generate Prompt</button>
-<button onclick="copyText()">Copy</button>
+<button onclick="generate()">Generate</button>
 
-<textarea id="hasil" placeholder="Hasil akan muncul di sini..."></textarea>
+<div class="tabs">
+<div class="tab active" onclick="openTab(0)">Prompt</div>
+<div class="tab" onclick="openTab(1)">Caption</div>
+<div class="tab" onclick="openTab(2)">Hashtag</div>
+<div class="tab" onclick="openTab(3)">Hook</div>
+<div class="tab" onclick="openTab(4)">CTA</div>
+</div>
+
+<textarea id="o1" class="output active"></textarea>
+<textarea id="o2" class="output"></textarea>
+<textarea id="o3" class="output"></textarea>
+<textarea id="o4" class="output"></textarea>
+<textarea id="o5" class="output"></textarea>
 
 <footer>Gratis • Local App • No API</footer>
 
 </div>
 
 <script>
-function auto(v,def){return v && v.trim()!=="" ? v : def;}
+
+function openTab(i){
+document.querySelectorAll('.tab').forEach((t,n)=>t.classList.toggle('active',n==i));
+document.querySelectorAll('.output').forEach((o,n)=>o.classList.toggle('active',n==i));
+}
+
+function def(v,d){return v&&v.trim()!=""?v:d;}
 
 function generate(){
 
-let produk=auto(produk.value,"Produk Skincare");
-let manfaat=auto(manfaat.value,"membantu meningkatkan kualitas dan penampilan kulit");
-let gaya=auto(gaya.value,"natural, handheld, indoor");
-let tempatVal=auto(tempat.value,"indoor");
-let g=gender.value;
-let h=hijab.value;
+let produk=def(produk.value,"Produk Skincare");
+let manfaat=def(manfaat.value,"membantu mencerahkan dan menyehatkan kulit");
 
-let d1v=Number(d1.value)||5;
-let d2v=Number(d2.value)||5;
-let d3v=Number(d3.value)||5;
-let d4v=Number(d4.value)||5;
+let d1v=+d1.value||5,d2v=+d2.value||5,d3v=+d3.value||5,d4v=+d4.value||5;
+total.value=(d1v+d2v+d3v+d4v)+" detik";
 
-let s1v=auto(s1.value,"Model memperlihatkan produk");
-let s2v=auto(s2.value,"Close up tekstur produk");
-let s3v=auto(s3.value,"Model mengaplikasikan produk");
-let s4v=auto(s4.value,"Closing + CTA");
+let prompt=
+"UGC video tentang "+produk+
+", manfaat: "+manfaat+
+", model "+gender.value+" "+hijab.value+
+", lokasi "+tempat.value+
+", gaya "+gaya.value+
+", "+delivery.value+
+". Scene: "+s1.value+", "+s2.value+", "+s3.value+", "+s4.value;
 
-let totalDur=d1v+d2v+d3v+d4v;
-total.value=totalDur+" detik";
+let hooks=["Stop scroll!","Produk ini viral!","Aku baru nemu ini!","Serius works!"];
+let ctas=["Klik keranjang!","Checkout sekarang!","Buruan order!"];
 
-let deliveryText="";
-if(delivery.value=="Berbicara + Overlay")
-deliveryText="Model berbicara natural ke kamera + teks overlay singkat.";
-if(delivery.value=="Model Berbicara")
-deliveryText="Model berbicara langsung ke kamera tanpa overlay.";
-if(delivery.value=="Teks Overlay Saja")
-deliveryText="Tanpa suara model, gunakan teks overlay besar.";
+o1.value=prompt;
+o2.value=produk+" bikin kulit jadi lebih sehat dan glowing.";
+o3.value="#ugc #fyp #viral #skincare #review";
+o4.value=hooks[Math.floor(Math.random()*hooks.length)];
+o5.value=ctas[Math.floor(Math.random()*ctas.length)];
 
-let hooks=[
-"Stop scroll sekarang!",
-"Produk ini lagi viral!",
-"Seriusan works!",
-"Wajib coba!",
-"Aku baru nemu ini!"
-];
-
-let ctas=[
-"Klik keranjang sekarang!",
-"Checkout sekarang!",
-"Buruan order!",
-"Jangan sampai kehabisan!"
-];
-
-let hook=hooks[Math.floor(Math.random()*hooks.length)];
-let cta=ctas[Math.floor(Math.random()*ctas.length)];
-
-let teks=
-"HOOK:\n"+hook+"\n\n"+
-"Produk: "+produk+"\n"+
-"Manfaat: "+manfaat+"\n"+
-"Model: "+g+" "+h+"\n"+
-"Penyampaian: "+deliveryText+"\n"+
-"Gaya: "+gaya+"\n"+
-"Lokasi: "+tempatVal+"\n\n"+
-
-"Scene 1 ("+d1v+"s): "+s1v+" | Overlay: "+manfaat+"\n"+
-"Scene 2 ("+d2v+"s): "+s2v+" | Overlay: "+manfaat+"\n"+
-"Scene 3 ("+d3v+"s): "+s3v+" | Overlay: "+manfaat+"\n"+
-"Scene 4 ("+d4v+"s): "+s4v+" | Overlay: "+manfaat+"\n\n"+
-
-"Total Durasi: "+totalDur+" detik\n\n"+
-
-"CAPTION:\n"+
-produk+" membantu "+manfaat+".\n\n"+
-
-"HASHTAG:\n"+
-"#ugc #fyp #viral #skincare #reviewproduk\n\n"+
-
-"CTA:\n"+cta;
-
-hasil.value=teks;
 }
 
-function copyText(){
-navigator.clipboard.writeText(hasil.value);
-alert("Berhasil disalin!");
-}
 </script>
 
 </body>
