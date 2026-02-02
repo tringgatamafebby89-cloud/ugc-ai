@@ -3,169 +3,245 @@
 <head>
 <meta charset="UTF-8">
 <title>Febby AI Studio PRO</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel="icon" href="icon.png">
 
 <style>
-:root{
---bg1:#12001f;
---bg2:#3b0066;
---card:#1c002e;
---accent1:#ff4fd8;
---accent2:#7b4dff;
---text:#ffffff;
-}
+*{box-sizing:border-box;font-family:Inter,Arial}
 body{
 margin:0;
-font-family:Arial;
-background:linear-gradient(135deg,var(--bg1),var(--bg2),var(--bg1));
-color:var(--text);
-}
-.light{
---bg1:#f2f2f2;
---bg2:#d6d6d6;
---card:#ffffff;
---text:#000000;
-}
-.sidebar{
-position:fixed;
-left:-260px;
-top:0;
-width:260px;
-height:100%;
-background:#0f001c;
-padding:15px;
-transition:.3s;
-overflow:auto;
-z-index:10;
-}
-.menuBtn{
-position:fixed;
-top:10px;
-left:10px;
-font-size:26px;
-cursor:pointer;
-z-index:20;
-}
-.sidebar button,.sidebar select,.sidebar input{
-width:100%;
-margin:5px 0;
-padding:8px;
-border:none;
-border-radius:8px;
-background:linear-gradient(90deg,var(--accent1),var(--accent2));
+background:radial-gradient(circle at top,#4b0082,#120018);
 color:white;
-font-weight:bold;
 }
+
+/* ===== Layout ===== */
+.app{
+display:flex;
+min-height:100vh;
+}
+
+/* ===== Sidebar ===== */
+.sidebar{
+width:70px;
+background:linear-gradient(180deg,#7a00ff,#ff4ecd);
+display:flex;
+flex-direction:column;
+align-items:center;
+padding:15px 5px;
+gap:18px;
+}
+
+.sidebtn{
+width:45px;
+height:45px;
+border-radius:12px;
+background:rgba(0,0,0,.35);
+display:flex;
+align-items:center;
+justify-content:center;
+cursor:pointer;
+font-size:18px;
+}
+
+.sidebtn:hover{background:#ffffff30}
+
+/* ===== Main ===== */
+.main{
+flex:1;
+padding:25px;
+}
+
 .container{
 max-width:1100px;
 margin:auto;
-padding:40px 15px;
+background:rgba(0,0,0,.35);
+border-radius:22px;
+padding:25px;
+box-shadow:0 0 40px #a855ff55;
 }
-.card{
-background:var(--card);
-padding:20px;
-border-radius:18px;
-box-shadow:0 0 20px var(--accent2);
+
+/* ===== Header ===== */
+.header{
+text-align:center;
+margin-bottom:25px;
 }
-h1{text-align:center;}
-select,input,textarea{
+.header img{
+width:80px;
+margin-bottom:10px;
+}
+.header h1{
+margin:5px 0;
+font-size:32px;
+}
+.header p{
+opacity:.8;
+}
+
+/* ===== Form ===== */
+input,select,textarea,button{
 width:100%;
-padding:8px;
-margin-top:6px;
-border-radius:8px;
+padding:12px;
+border-radius:10px;
 border:none;
+outline:none;
+font-size:14px;
 }
-textarea{min-height:80px;}
-.row{
+
+textarea{min-height:90px;resize:vertical}
+
+.row2{
 display:grid;
 grid-template-columns:1fr 1fr;
+gap:10px;
+}
+.row3{
+display:grid;
+grid-template-columns:1fr 1fr 1fr;
+gap:10px;
+}
+
+.section{
+margin-top:18px;
+padding-top:15px;
+border-top:1px solid #ffffff22;
+}
+
+.section b{
+display:block;
+margin-bottom:8px;
+}
+
+/* ===== Check Grid ===== */
+.checkgrid{
+display:grid;
+grid-template-columns:repeat(2,1fr);
 gap:8px;
 }
-button.main{
-width:100%;
-padding:10px;
-margin-top:10px;
-border:none;
-border-radius:10px;
-background:linear-gradient(90deg,var(--accent1),var(--accent2));
-color:white;
-font-size:15px;
-font-weight:bold;
+label{
+display:flex;
+align-items:center;
+gap:6px;
+font-size:14px;
 }
+
+/* ===== Buttons ===== */
+.btn{
+background:linear-gradient(90deg,#ff4ecd,#7a4bff);
+color:white;
+font-weight:bold;
+cursor:pointer;
+}
+
+.btn:hover{opacity:.9}
+
+/* ===== Tabs ===== */
 .tabs{
 display:flex;
-gap:5px;
-margin-top:8px;
+gap:6px;
+margin-top:15px;
 }
-.tabs button{
+.tab{
 flex:1;
-border:none;
-padding:6px;
-border-radius:6px;
-background:#2b0050;
-color:white;
+text-align:center;
+padding:10px;
+border-radius:10px;
+background:#2b0040;
+cursor:pointer;
 }
-.tabs button.active{background:var(--accent1);}
-#result{height:220px;margin-top:8px;}
-label{display:block;font-size:13px;}
+.tab.active{
+background:linear-gradient(90deg,#ff4ecd,#7a4bff);
+}
+
+/* ===== Output ===== */
+#output{
+margin-top:10px;
+background:white;
+color:black;
+padding:12px;
+border-radius:10px;
+min-height:140px;
+white-space:pre-wrap;
+}
+
+/* ===== Footer ===== */
+.footer{
+text-align:center;
+margin-top:15px;
+font-size:12px;
+opacity:.6;
+}
+
+/* ===== Responsive ===== */
+@media(max-width:600px){
+.row2,.row3{grid-template-columns:1fr}
+.sidebar{width:55px}
+}
 </style>
 </head>
 
 <body>
 
-<div class="menuBtn" onclick="toggleMenu()">☰</div>
+<div class="app">
 
-<div id="sidebar" class="sidebar">
-<h3>PLATFORM</h3>
-<button onclick="platform='TikTok'">TikTok</button>
-<button onclick="platform='Shopee'">Shopee</button>
-<button onclick="platform='YouTube Shorts'">YouTube Shorts</button>
-
-<h3>TEMA</h3>
-<select onchange="setTheme(this.value)">
-<option value="purple">Ungu Pink</option>
-<option value="blue">Biru</option>
-<option value="green">Hijau</option>
-<option value="red">Merah</option>
-</select>
-<button onclick="document.body.classList.toggle('light')">Light/Dark</button>
-
-<h3>BACKGROUND</h3>
-<input type="file" accept="image/*" onchange="setBG(this)">
-<button onclick="resetBG()">Reset BG</button>
+<!-- SIDEBAR -->
+<div class="sidebar">
+<div class="sidebtn">🏠</div>
+<div class="sidebtn">💡</div>
+<div class="sidebtn">🎥</div>
+<div class="sidebtn">⚙️</div>
 </div>
 
+<!-- MAIN -->
+<div class="main">
+
 <div class="container">
-<div class="card">
 
+<div class="header">
+<img src="Logo.png">
 <h1>Febby AI Studio PRO</h1>
+<p>UGC Ultimate Creator Engine</p>
+</div>
 
-<select id="template">
-<option>Skincare Review</option>
-<option>Before After</option>
-<option>Unboxing</option>
-<option>Tutorial</option>
-<option>Testimoni</option>
+<!-- ===== IDE KONTEN ===== -->
+<div class="section">
+<b>Generator Ide Konten</b>
+<div class="row2">
+<select id="ideaNiche">
+<option>Skincare</option>
+<option>Fashion</option>
+<option>Food</option>
+<option>Gadget</option>
+<option>Beauty</option>
+</select>
+<button class="btn" onclick="genIdea()">Generate Ide</button>
+</div>
+<input id="ideaResult" placeholder="Ide akan muncul di sini">
+</div>
+
+<!-- ===== FORM ===== -->
+<div class="section">
+<b>Detail Produk</b>
+<div class="row2">
+<select id="language">
+<option>Indonesia</option>
+<option>English</option>
+<option>Jawa</option>
+<option>Sunda</option>
 </select>
 
-<select id="tone">
-<option>Soft</option>
-<option>Friendly</option>
-<option>Energetic</option>
-<option>Confident</option>
+<select id="niche">
+<option>Skincare</option>
+<option>Fashion</option>
+<option>Food</option>
+<option>Gadget</option>
 </select>
-
-<select id="objective">
-<option>Awareness</option>
-<option>Edukasi</option>
-<option>Jualan</option>
-<option>Branding</option>
-</select>
+</div>
 
 <input id="product" placeholder="Nama Produk">
-<textarea id="benefit" placeholder="Manfaat Produk"></textarea>
+<textarea id="benefit" placeholder="Manfaat Produk (boleh banyak baris)"></textarea>
 
-<div class="row">
+<div class="row3">
 <select id="gender">
 <option>Wanita</option>
 <option>Pria</option>
@@ -175,158 +251,107 @@ label{display:block;font-size:13px;}
 <option>Non Hijab</option>
 <option>Hijab</option>
 </select>
-</div>
 
 <select id="modelType">
 <option>Dengan Model</option>
 <option>Tangan Saja</option>
 <option>Tanpa Model</option>
 </select>
-
-<label><input type="checkbox" id="noFace"> No Face</label>
-<label><input type="checkbox" id="closeUp"> Close Up</label>
-<label><input type="checkbox" id="asmr"> ASMR</label>
-
-<label><input type="checkbox" id="shake"> Goyang Produk</label>
-<label><input type="checkbox" id="zoomIn"> Zoom In</label>
-<label><input type="checkbox" id="zoomOut"> Zoom Out</label>
-<label><input type="checkbox" id="pan"> Pan</label>
-<label><input type="checkbox" id="tilt"> Tilt</label>
-
-<select id="resolution">
-<option>9:16 (1080x1920)</option>
-<option>1:1 (1080x1080)</option>
-<option>16:9 (1920x1080)</option>
-</select>
-
-<select id="quality">
-<option>HD</option>
-<option>Full HD</option>
-<option>4K</option>
-</select>
-
-<h3>Scene & Durasi</h3>
-<div class="row"><input id="d1" value="5"><input id="s1" placeholder="Scene 1"></div>
-<div class="row"><input id="d2" value="5"><input id="s2" placeholder="Scene 2"></div>
-<div class="row"><input id="d3" value="5"><input id="s3" placeholder="Scene 3"></div>
-<div class="row"><input id="d4" value="5"><input id="s4" placeholder="Scene 4"></div>
-
-<input id="total" readonly>
-
-<button class="main" onclick="generate()">GENERATE</button>
-
-<div class="tabs">
-<button class="active" onclick="setTab('prompt',this)">Prompt</button>
-<button onclick="setTab('caption',this)">Caption</button>
-<button onclick="setTab('hashtag',this)">Hashtag</button>
-<button onclick="setTab('hook',this)">Hook</button>
-<button onclick="setTab('cta',this)">CTA</button>
 </div>
 
-<textarea id="result"></textarea>
-<button class="main" onclick="copyText()">COPY</button>
+<input id="style" placeholder="Gaya Video (natural, cinematic, handheld, dll)">
 
+<select id="place">
+<option>Indoor Rumah</option>
+<option>Kamar Tidur</option>
+<option>Kamar Mandi</option>
+<option>Dapur</option>
+<option>Outdoor</option>
+<option>Kafe</option>
+<option>Kantor</option>
+</select>
+
+<select id="overlay">
+<option>Berbicara + Overlay</option>
+<option>Berbicara Saja</option>
+<option>Overlay Saja</option>
+</select>
+</div>
+
+<!-- ===== EFFECT ===== -->
+<div class="section">
+<b>Efek Visual</b>
+<div class="checkgrid">
+<label><input type="checkbox" id="noFace">No Face</label>
+<label><input type="checkbox" id="closeUp">Close Up</label>
+<label><input type="checkbox" id="asmr">ASMR</label>
+<label><input type="checkbox" id="shake">Goyang Produk</label>
+<label><input type="checkbox" id="zoomIn">Zoom In</label>
+<label><input type="checkbox" id="zoomOut">Zoom Out</label>
+</div>
+</div>
+
+<!-- ===== SCENE ===== -->
+<div class="section">
+<b>Scene & Durasi (detik)</b>
+<div class="row2">
+<input id="d1" value="5">
+<input id="s1" placeholder="Scene 1">
+<input id="d2" value="5">
+<input id="s2" placeholder="Scene 2">
+<input id="d3" value="5">
+<input id="s3" placeholder="Scene 3">
+<input id="d4" value="5">
+<input id="s4" placeholder="Scene 4">
+</div>
+<input id="total" placeholder="Total Durasi" readonly>
+</div>
+
+<button class="btn" onclick="generate()">Generate</button>
+
+<!-- ===== TABS ===== -->
+<div class="tabs">
+<div class="tab active" onclick="switchTab('prompt')">Prompt</div>
+<div class="tab" onclick="switchTab('caption')">Caption</div>
+<div class="tab" onclick="switchTab('hashtag')">Hashtag</div>
+<div class="tab" onclick="switchTab('hook')">Hook</div>
+<div class="tab" onclick="switchTab('cta')">CTA</div>
+</div>
+
+<div id="output"></div>
+
+<button class="btn" onclick="copyText()">Copy</button>
+
+<div class="footer">Gratis • Local App • No API</div>
+
+</div>
 </div>
 </div>
 
 <script>
-let platform="TikTok";
-let tab="prompt";
+let mode="prompt";
 
-const hooks=["Stop scroll!","Kamu wajib tau ini!","Produk ini viral!","Serius works!"];
-const ctas=["Klik keranjang sekarang!","Checkout sekarang!","Buruan order!"];
-
-function toggleMenu(){
-let sb=document.getElementById("sidebar");
-sb.style.left = sb.style.left=="0px"?"-260px":"0px";
+function switchTab(m){
+mode=m;
+document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
+event.target.classList.add("active");
 }
 
-function setTheme(t){
-if(t=="blue"){setColor("#00c6ff","#0072ff");}
-if(t=="green"){setColor("#00ff9d","#00b86b");}
-if(t=="red"){setColor("#ff4f4f","#ff005d");}
-if(t=="purple"){setColor("#ff4fd8","#7b4dff");}
-}
-function setColor(a,b){
-document.documentElement.style.setProperty('--accent1',a);
-document.documentElement.style.setProperty('--accent2',b);
-}
-
-function setBG(i){
-let r=new FileReader();
-r.onload=e=>{document.body.style.background=`url('${e.target.result}') center/cover fixed`;}
-r.readAsDataURL(i.files[0]);
-}
-function resetBG(){
-document.body.style.background=`linear-gradient(135deg,var(--bg1),var(--bg2),var(--bg1))`;
-}
-
-function setTab(t,b){
-tab=t;
-document.querySelectorAll(".tabs button").forEach(x=>x.classList.remove("active"));
-b.classList.add("active");
+function genIdea(){
+let ideas=[
+"Review jujur",
+"Before After",
+"Tekstur close up",
+"First impression",
+"Routine pagi",
+"Routine malam"
+];
+ideaResult.value=ideas[Math.floor(Math.random()*ideas.length)];
 }
 
 function generate(){
-let tot=(+d1.value)+(+d2.value)+(+d3.value)+(+d4.value);
-total.value=tot+" detik";
-
-let modelInst="";
-if(modelType.value=="Tangan Saja") modelInst="hands only";
-if(modelType.value=="Tanpa Model") modelInst="product only";
-if(modelType.value=="Dengan Model") modelInst="human model";
-
-if(noFace.checked) modelInst+=", no face";
-if(closeUp.checked) modelInst+=", close up";
-if(asmr.checked) modelInst+=", ASMR";
-
-let motion="";
-if(shake.checked) motion+=" shake product,";
-if(zoomIn.checked) motion+=" zoom in,";
-if(zoomOut.checked) motion+=" zoom out,";
-if(pan.checked) motion+=" pan camera,";
-if(tilt.checked) motion+=" tilt camera,";
-
-let hook=hooks[Math.floor(Math.random()*hooks.length)];
-let cta=ctas[Math.floor(Math.random()*ctas.length)];
-
-let prompt=`Platform: ${platform}
-Template: ${template.value}
-Objective: ${objective.value}
-Tone: ${tone.value}
-
-Produk: ${product.value}
-Manfaat: ${benefit.value}
-
-Model: ${modelInst}
-Detail: ${gender.value} ${hijab.value}
-
-Resolusi: ${resolution.value}
-Quality: ${quality.value}
-
-HOOK: ${hook}
-
-Scene1 (${d1.value}s): ${s1.value}
-Scene2 (${d2.value}s): ${s2.value}
-Scene3 (${d3.value}s): ${s3.value}
-Scene4 (${d4.value}s): ${s4.value}
-
-Motion: ${motion}
-CTA: ${cta}
-Vertical realistic UGC`;
-
-let caption=`${hook}\n${product.value}\n${benefit.value}\n${cta}`;
-let hashtag="#ugc #fyp #"+product.value.replace(/\s/g,"");
-
-window.data={prompt,caption,hashtag,hook,cta};
-result.value=window.data[tab];
-}
-
-function copyText(){
-navigator.clipboard.writeText(result.value);
-alert("Copied!");
-}
-</script>
-
-</body>
-</html>
+let p=product.value;
+let b=benefit.value;
+let style=style.value;
+let place=document.getElementById("place").value;
+let overlay=document.getElementBy
