@@ -8,60 +8,52 @@
 body{
 margin:0;
 font-family:Arial, sans-serif;
-background:linear-gradient(135deg,#16001f,#3a005f,#7b2cff);
+background:linear-gradient(135deg,#12001f,#3a005f,#7b2cff);
 color:white;
 }
 
+/* Layout */
 .wrapper{display:flex;min-height:100vh;}
-
 .sidebar{
 width:70px;
-background:#24003a;
+background:#25003f;
 display:flex;
 flex-direction:column;
 align-items:center;
 padding-top:15px;
 }
-
 .sidebar button{
-background:#5c1bb7;
+background:none;
 border:none;
 color:white;
-font-size:20px;
-margin:10px 0;
-border-radius:12px;
-width:45px;height:45px;
+font-size:22px;
+margin:12px 0;
 cursor:pointer;
 }
 
-.main{
-flex:1;
-display:flex;
-justify-content:center;
-padding:20px;
-}
+.main{flex:1;display:flex;justify-content:center;padding:20px;}
 
 .card{
 width:100%;
 max-width:900px;
-background:rgba(0,0,0,0.55);
-border-radius:20px;
+background:rgba(0,0,0,.55);
 padding:25px;
-box-shadow:0 0 30px #b94bff;
+border-radius:20px;
+box-shadow:0 0 25px #b94bff;
 }
 
-h1,h2,h3{text-align:center;}
+h1,h2{text-align:center;margin:5px;}
 
 input,select,textarea,button{
 width:100%;
 padding:12px;
 border-radius:10px;
 border:none;
-margin-top:8px;
+margin-top:10px;
 font-size:14px;
 }
 
-textarea{min-height:90px;}
+textarea{min-height:90px;resize:vertical;}
 
 .row{display:flex;gap:10px;}
 
@@ -72,26 +64,15 @@ font-weight:bold;
 cursor:pointer;
 }
 
+.tabs{display:flex;gap:5px;margin-top:10px;}
+.tabs button{flex:1;background:#35004f;}
+.tabs button.active{background:#ff4fd8;}
+
 .preview{
-margin-top:10px;
-max-width:100%;
-border-radius:12px;
+margin-top:5px;
+max-width:120px;
+border-radius:10px;
 display:none;
-}
-
-.tabs{
-display:flex;
-gap:5px;
-margin-top:15px;
-}
-
-.tabs button{
-flex:1;
-background:#35004f;
-}
-
-.tabs button.active{
-background:#ff4fd8;
 }
 
 .output{min-height:140px;}
@@ -104,10 +85,11 @@ background:#ff4fd8;
 
 <div class="wrapper">
 
+<!-- SIDEBAR -->
 <div class="sidebar">
-<button onclick="show('idea')">💡</button>
-<button onclick="show('gen')">🎬</button>
-<button onclick="show('set')">⚙️</button>
+<button onclick="showSection('ide')">💡</button>
+<button onclick="showSection('gen')">🎬</button>
+<button onclick="showSection('set')">⚙️</button>
 </div>
 
 <div class="main">
@@ -117,26 +99,45 @@ background:#ff4fd8;
 <h2>UGC Ultimate Creator Engine</h2>
 
 <!-- IDE -->
-<div id="idea">
+<div id="ide">
 <h3>Generator Ide Konten</h3>
 <select id="ideaNiche">
 <option>Skincare</option>
+<option>Makeup</option>
 <option>Fashion</option>
 <option>Food</option>
-<option>Makeup</option>
 <option>Elektronik</option>
+<option>Affiliate</option>
 </select>
-<button onclick="genIdea()">Generate Ide</button>
+
+<button onclick="generateIdea()">Generate Ide</button>
 <textarea id="ideaResult"></textarea>
 </div>
 
 <!-- GENERATOR -->
-<div id="gen" style="display:none">
+<div id="gen" style="display:none;">
 
 <h3>Detail Produk</h3>
 
+<div class="row">
+<select id="language">
+<option>Indonesia</option>
+<option>English</option>
+<option>Sunda</option>
+<option>Jawa</option>
+</select>
+
+<select id="category">
+<option>Skincare</option>
+<option>Makeup</option>
+<option>Fashion</option>
+<option>Food</option>
+<option>Elektronik</option>
+</select>
+</div>
+
 <input id="product" placeholder="Nama Produk">
-<textarea id="benefit" placeholder="Manfaat Produk"></textarea>
+<textarea id="benefit" placeholder="Manfaat Produk (boleh banyak baris)"></textarea>
 
 <div class="row">
 <select id="gender">
@@ -162,67 +163,78 @@ background:#ff4fd8;
 <option>Kamar Mandi</option>
 <option>Dapur</option>
 <option>Ruang Tamu</option>
+<option>Depan Cermin</option>
+<option>Outdoor Halaman</option>
 <option>Cafe</option>
 <option>Toko</option>
-<option>Outdoor</option>
 <option>Studio</option>
+<option>Mall</option>
+<option>Kantor</option>
 </select>
 
 <select id="style">
 <option>Natural UGC</option>
 <option>Cinematic</option>
+<option>Handheld</option>
 <option>Review</option>
 <option>Testimoni</option>
-<option>ASMR</option>
 </select>
 
-<select id="overlayMode">
+<select id="voiceType">
 <option>Berbicara + Teks</option>
-<option>Berbicara Saja</option>
-<option>Teks Saja</option>
-<option>Tanpa Keduanya</option>
+<option>Berbicara</option>
+<option>Teks Overlay</option>
+<option>Tanpa Suara</option>
 </select>
 
 <h3>Foto Produk</h3>
-<input type="file" onchange="preview(this,'pPrev')">
-<img id="pPrev" class="preview">
+<input type="file" accept="image/*" onchange="previewImg(this,'prevProduct')">
+<img id="prevProduct" class="preview">
 
 <h3>Foto Model</h3>
-<input type="file" onchange="preview(this,'mPrev')">
-<img id="mPrev" class="preview">
+<input type="file" accept="image/*" onchange="previewImg(this,'prevModel')">
+<img id="prevModel" class="preview">
 
-<h3>Efek</h3>
-<label><input type="checkbox" id="noface">No Face</label>
-<label><input type="checkbox" id="closeup">Close Up</label>
-<label><input type="checkbox" id="shake">Goyang Produk</label>
-<label><input type="checkbox" id="zoom">Zoom</label>
+<h3>Efek Video</h3>
+<label><input type="checkbox" id="noface"> No Face</label><br>
+<label><input type="checkbox" id="closeup"> Close Up</label><br>
+<label><input type="checkbox" id="shake"> Goyang Produk</label><br>
+<label><input type="checkbox" id="zoom"> Zoom In/Out</label>
 
-<h3>Scene & Durasi</h3>
+<h3>Scene & Durasi (detik)</h3>
 
-<div class="row"><input id="d1" value="5"><input id="s1" placeholder="Scene 1"></div>
-<div class="row"><input id="d2" value="5"><input id="s2" placeholder="Scene 2"></div>
-<div class="row"><input id="d3" value="5"><input id="s3" placeholder="Scene 3"></div>
-<div class="row"><input id="d4" value="5"><input id="s4" placeholder="Scene 4"></div>
+<div class="row">
+<input id="d1" value="5"><input id="s1" placeholder="Scene 1">
+</div>
+<div class="row">
+<input id="d2" value="5"><input id="s2" placeholder="Scene 2">
+</div>
+<div class="row">
+<input id="d3" value="5"><input id="s3" placeholder="Scene 3">
+</div>
+<div class="row">
+<input id="d4" value="5"><input id="s4" placeholder="Scene 4">
+</div>
 
-<input id="total" placeholder="Total Durasi">
+<input id="total" placeholder="Total Durasi (auto)">
 
-<button onclick="generate()">GENERATE</button>
+<button onclick="generateAll()">GENERATE</button>
 
 <div class="tabs">
-<button onclick="tab='prompt'">Prompt</button>
-<button onclick="tab='caption'">Caption</button>
-<button onclick="tab='hashtag'">Hashtag</button>
-<button onclick="tab='hook'">Hook</button>
-<button onclick="tab='cta'">CTA</button>
+<button class="active" onclick="setTab('prompt')">Prompt</button>
+<button onclick="setTab('caption')">Caption</button>
+<button onclick="setTab('hashtag')">Hashtag</button>
+<button onclick="setTab('hook')">Hook</button>
+<button onclick="setTab('cta')">CTA</button>
 </div>
 
 <textarea id="result" class="output"></textarea>
-<button onclick="copy()">COPY</button>
+<button onclick="copyText()">COPY</button>
 
 </div>
 
 <!-- SETTINGS -->
-<div id="set" style="display:none">
+<div id="set" style="display:none;">
 <h3>Pengaturan</h3>
 <input type="color" onchange="document.body.style.background=this.value">
 </div>
@@ -236,76 +248,79 @@ background:#ff4fd8;
 <script>
 let tab="prompt";
 
-function show(x){
-idea.style.display="none";
+function showSection(x){
+ide.style.display="none";
 gen.style.display="none";
 set.style.display="none";
 document.getElementById(x).style.display="block";
 }
 
-function genIdea(){
+function setTab(t){tab=t;}
+
+function generateIdea(){
 let arr=[
 "Before After",
+"Tekstur Close Up",
 "Review Jujur",
-"Tekstur Closeup",
 "ASMR Pemakaian",
 "Unboxing",
-"Daily Routine"
+"Rutinitas Skincare"
 ];
 ideaResult.value=arr[Math.floor(Math.random()*arr.length)];
 }
 
-function preview(input,id){
+function previewImg(input,id){
 let f=input.files[0];
-if(!f)return;
+if(!f) return;
 let r=new FileReader();
-r.onload=()=>{let i=document.getElementById(id);i.src=r.result;i.style.display="block";}
+r.onload=()=>{document.getElementById(id).src=r.result;
+document.getElementById(id).style.display="block";}
 r.readAsDataURL(f);
 }
 
-function generate(){
-
-let totalDur=(+d1.value)+(+d2.value)+(+d3.value)+(+d4.value);
+function generateAll(){
+let totalDur=(+d1.value||0)+(+d2.value||0)+(+d3.value||0)+(+d4.value||0);
 total.value=totalDur+" detik";
 
 let effects=[];
-if(noface.checked)effects.push("no face");
-if(closeup.checked)effects.push("close-up");
-if(shake.checked)effects.push("shake product");
-if(zoom.checked)effects.push("zoom");
+if(noface.checked) effects.push("no face");
+if(closeup.checked) effects.push("close-up");
+if(shake.checked) effects.push("shake product");
+if(zoom.checked) effects.push("zoom");
 
 let prompt=`Create ${style.value} UGC video.
+Language: ${language.value}
 Product: ${product.value}
 Benefits: ${benefit.value}
-Model: ${modelType.value}
+Model Type: ${modelType.value}
 Gender: ${gender.value}
 Hijab: ${hijab.value}
 Location: ${location.value}
-Overlay Mode: ${overlayMode.value}
+Voice/Text: ${voiceType.value}
 Effects: ${effects.join(",")}
 
-Scene1(${d1.value}s): ${s1.value}
-Scene2(${d2.value}s): ${s2.value}
-Scene3(${d3.value}s): ${s3.value}
-Scene4(${d4.value}s): ${s4.value}
+Scene1 (${d1.value}s): ${s1.value}
+Scene2 (${d2.value}s): ${s2.value}
+Scene3 (${d3.value}s): ${s3.value}
+Scene4 (${d4.value}s): ${s4.value}
 
-Include strong hook, caption and CTA.`;
+Include strong hook, caption, CTA.`;
 
 let caption=`Aku baru coba ${product.value} dan hasilnya bikin kaget 😍`;
-let hashtag="#ugc #fyp #reviewproduk";
-let hook="Stop scroll! Ini solusi kamu!";
-let cta="Klik keranjang sekarang!";
+let hashtag=`#ugc #reviewproduk #fyp #viral`;
+let hook=`Stop scroll! Produk ini bikin beda`;
+let cta=`Klik keranjang sekarang`;
 
-if(tab=="prompt")result.value=prompt;
-if(tab=="caption")result.value=caption;
-if(tab=="hashtag")result.value=hashtag;
-if(tab=="hook")result.value=hook;
-if(tab=="cta")result.value=cta;
+if(tab=="prompt") result.value=prompt;
+if(tab=="caption") result.value=caption;
+if(tab=="hashtag") result.value=hashtag;
+if(tab=="hook") result.value=hook;
+if(tab=="cta") result.value=cta;
 }
 
-function copy(){
+function copyText(){
 navigator.clipboard.writeText(result.value);
-alert("Disalin!");
+alert("Berhasil disalin!");
 }
 </script>
 
