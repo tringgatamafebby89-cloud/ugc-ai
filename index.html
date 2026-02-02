@@ -12,11 +12,7 @@ background:linear-gradient(135deg,#16001f,#3a005f,#7b2cff);
 color:white;
 }
 
-/* ===== LAYOUT ===== */
-.wrapper{
-display:flex;
-min-height:100vh;
-}
+.wrapper{display:flex;min-height:100vh;}
 
 .sidebar{
 width:70px;
@@ -48,14 +44,13 @@ padding:20px;
 
 .card{
 width:100%;
-max-width:520px;
+max-width:540px;
 background:rgba(0,0,0,0.6);
 border-radius:20px;
 padding:25px;
 box-shadow:0 0 25px #b94bff;
 }
 
-/* ===== UI ===== */
 h1,h2{text-align:center;margin:5px;}
 
 input,select,textarea,button{
@@ -68,7 +63,6 @@ font-size:15px;
 }
 
 textarea{min-height:90px;}
-
 .row{display:flex;gap:10px;}
 .row>*{flex:1;}
 
@@ -79,20 +73,9 @@ font-weight:bold;
 cursor:pointer;
 }
 
-.tabs{
-display:flex;
-gap:5px;
-margin-top:15px;
-}
-
-.tabs button{
-flex:1;
-background:#35004f;
-}
-
-.tabs button.active{
-background:#ff4fd8;
-}
+.tabs{display:flex;gap:5px;margin-top:15px;}
+.tabs button{flex:1;background:#35004f;}
+.tabs button.active{background:#ff4fd8;}
 
 .output{min-height:140px;}
 
@@ -103,12 +86,7 @@ border-radius:10px;
 display:none;
 }
 
-.footer{
-text-align:center;
-font-size:12px;
-opacity:0.7;
-margin-top:15px;
-}
+.footer{text-align:center;font-size:12px;opacity:.7;margin-top:15px;}
 </style>
 </head>
 
@@ -116,41 +94,37 @@ margin-top:15px;
 
 <div class="wrapper">
 
-<!-- ===== SIDEBAR ===== -->
 <div class="sidebar">
 <button onclick="showPage('ide')">💡</button>
 <button onclick="showPage('gen')">🎬</button>
 <button onclick="showPage('set')">⚙️</button>
 </div>
 
-<!-- ===== MAIN ===== -->
 <div class="main">
 <div class="card">
 
 <h1>Febby AI Studio PRO+</h1>
 <h2>UGC Prompt Generator</h2>
 
-<!-- ===== IDE ===== -->
+<!-- IDE -->
 <div id="pageIde">
-
 <h3>Generator Ide</h3>
 <select id="ideaNiche">
 <option>Skincare</option>
 <option>Fashion</option>
 <option>Food</option>
 <option>Elektronik</option>
+<option>Affiliate</option>
 </select>
 
 <button onclick="generateIdea()">Generate Ide</button>
 <textarea id="ideaResult"></textarea>
-
 </div>
 
-<!-- ===== GENERATOR ===== -->
+<!-- GENERATOR -->
 <div id="pageGen" style="display:none;">
 
 <h3>Detail Produk</h3>
-
 <input id="productName" placeholder="Nama Produk">
 <textarea id="benefit" placeholder="Manfaat Produk"></textarea>
 
@@ -160,12 +134,21 @@ margin-top:15px;
 <option>Pria</option>
 </select>
 
+<select id="hijab">
+<option>Non Hijab</option>
+<option>Hijab</option>
+</select>
+</div>
+
 <select id="modelType">
 <option>Dengan Model</option>
 <option>Tangan Saja</option>
 <option>Tanpa Model</option>
+<option>Model Wanita Dewasa</option>
+<option>Model Remaja</option>
+<option>Model Pria</option>
+<option>Couple</option>
 </select>
-</div>
 
 <select id="location">
 <option>Indoor Rumah</option>
@@ -173,9 +156,19 @@ margin-top:15px;
 <option>Kamar Mandi</option>
 <option>Dapur</option>
 <option>Ruang Tamu</option>
-<option>Outdoor</option>
+<option>Depan Cermin</option>
+<option>Balkon</option>
+<option>Teras Rumah</option>
+<option>Halaman</option>
+<option>Outdoor Jalan</option>
 <option>Cafe</option>
+<option>Restoran</option>
+<option>Mall</option>
+<option>Toko</option>
+<option>Mini Market</option>
 <option>Studio</option>
+<option>Kantor</option>
+<option>Kampus</option>
 </select>
 
 <select id="style">
@@ -184,6 +177,7 @@ margin-top:15px;
 <option>Handheld</option>
 <option>Review</option>
 <option>Testimoni</option>
+<option>Unboxing</option>
 </select>
 
 <h3>Foto Produk</h3>
@@ -207,6 +201,7 @@ margin-top:15px;
 <label><input type="checkbox" id="closeup"> Close Up</label>
 <label><input type="checkbox" id="shake"> Goyang Produk</label>
 <label><input type="checkbox" id="zoomin"> Zoom In</label>
+<label><input type="checkbox" id="zoomout"> Zoom Out</label>
 
 <h3>Scene & Durasi</h3>
 
@@ -214,17 +209,14 @@ margin-top:15px;
 <input id="d1" value="5">
 <input id="s1" placeholder="Scene 1">
 </div>
-
 <div class="row">
 <input id="d2" value="5">
 <input id="s2" placeholder="Scene 2">
 </div>
-
 <div class="row">
 <input id="d3" value="5">
 <input id="s3" placeholder="Scene 3">
 </div>
-
 <div class="row">
 <input id="d4" value="5">
 <input id="s4" placeholder="Scene 4">
@@ -247,13 +239,11 @@ margin-top:15px;
 
 </div>
 
-<!-- ===== SETTINGS ===== -->
+<!-- SETTINGS -->
 <div id="pageSet" style="display:none;">
 <h3>Pengaturan</h3>
-
-<label>Ganti Warna Background</label>
+<label>Warna Background</label>
 <input type="color" onchange="document.body.style.background=this.value">
-
 <label>Upload Background</label>
 <input type="file" accept="image/*" onchange="setBG(this)">
 </div>
@@ -262,7 +252,6 @@ margin-top:15px;
 
 </div>
 </div>
-
 </div>
 
 <script>
@@ -285,20 +274,16 @@ ideaResult.value=ideas[Math.floor(Math.random()*ideas.length)];
 }
 
 function previewProduct(i){
-let img=productPreview;
 let f=i.files[0];
-if(!f)return;
 let r=new FileReader();
-r.onload=()=>{img.src=r.result;img.style.display="block";}
+r.onload=()=>{productPreview.src=r.result;productPreview.style.display="block";}
 r.readAsDataURL(f);
 }
 
 function previewModel(i){
-let img=modelPreview;
 let f=i.files[0];
-if(!f)return;
 let r=new FileReader();
-r.onload=()=>{img.src=r.result;img.style.display="block";}
+r.onload=()=>{modelPreview.src=r.result;modelPreview.style.display="block";}
 r.readAsDataURL(f);
 }
 
@@ -311,21 +296,17 @@ if(noface.checked) eff.push("no face");
 if(closeup.checked) eff.push("close-up");
 if(shake.checked) eff.push("shake product");
 if(zoomin.checked) eff.push("zoom in");
-
-let pInfo="";
-let mInfo="";
-if(productImageType.value=="upload") pInfo="Use uploaded product image.";
-if(modelImageType.value=="upload") mInfo="Use uploaded model image.";
+if(zoomout.checked) eff.push("zoom out");
 
 let prompt=
-`Create ${style.value} video.
+`Create ${style.value} video
 Product: ${productName.value}
 Benefits: ${benefit.value}
-Model: ${modelType.value} ${gender.value}
+Gender: ${gender.value}
+Hijab: ${hijab.value}
+Model: ${modelType.value}
 Location: ${location.value}
 Effects: ${eff.join(",")}
-${pInfo}
-${mInfo}
 
 Scene1 (${d1.value}s): ${s1.value}
 Scene2 (${d2.value}s): ${s2.value}
@@ -358,4 +339,4 @@ r.readAsDataURL(f);
 </script>
 
 </body>
-  </html>
+</html>
