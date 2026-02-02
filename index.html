@@ -4,164 +4,93 @@
 <meta charset="UTF-8">
 <title>Febby AI Studio</title>
 
-<!-- ICON -->
-<link rel="icon" href="icon.png?v=5">
-<link rel="apple-touch-icon" href="icon.png?v=5">
+<link rel="icon" href="icon.png">
+<link rel="apple-touch-icon" href="icon.png">
 
 <style>
+*{box-sizing:border-box;font-family:Arial,sans-serif;}
+
 body{
 margin:0;
 min-height:100vh;
-background:linear-gradient(135deg,#120018,#2b0040,#5a0088);
-font-family:Arial, sans-serif;
-color:white;
+background:linear-gradient(135deg,#0a0018,#2b0052,#5b0cff);
 display:flex;
 justify-content:center;
+padding:20px;
+color:white;
 }
 
 .container{
 width:100%;
-max-width:430px;
-padding:15px;
-}
-
-.card{
-background:rgba(0,0,0,0.55);
+max-width:480px;
+background:rgba(20,0,40,0.95);
+border-radius:20px;
 padding:18px;
-border-radius:14px;
-box-shadow:0 0 20px rgba(255,0,255,.2);
+box-shadow:0 0 30px rgba(255,0,255,.35);
 }
 
-header{
-text-align:center;
-margin-bottom:15px;
-}
-
-header img{
-width:90px;
+.logo{
+width:110px;
 display:block;
 margin:auto;
 }
 
-h1{
-margin:8px 0 3px;
-font-size:22px;
-}
-
-h2{
-margin:0;
-font-size:14px;
-font-weight:normal;
-opacity:.8;
-}
-
-.tabs{
-display:flex;
-gap:6px;
-margin-bottom:10px;
-}
-
-.tabs button{
-flex:1;
-padding:8px;
-background:#3a005c;
-color:white;
-border:none;
-border-radius:8px;
-font-size:13px;
-}
-
-.tabs button.active{
-background:#ff4fd8;
-}
+h1{text-align:center;margin:8px 0;}
+h3{text-align:center;font-weight:normal;opacity:.8;margin-bottom:15px;}
 
 input,select,textarea,button{
 width:100%;
 padding:10px;
-margin:6px 0;
-border-radius:8px;
+border-radius:10px;
 border:none;
-box-sizing:border-box;
+margin-top:8px;
 font-size:14px;
 }
 
-textarea{min-height:130px}
+textarea{min-height:140px;resize:none;}
 
-.row2{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:8px;
-}
+.row{display:flex;gap:8px;}
+.scene-row{display:grid;grid-template-columns:1fr 3fr;gap:8px;}
 
-.scene-grid{
-display:grid;
-grid-template-columns:1fr 3fr;
-gap:8px;
-}
-
-.btn{
-background:#ff4fd8;
+button{
+background:linear-gradient(90deg,#ff4fd8,#7a3cff);
 color:white;
 font-weight:bold;
 }
 
-.btn2{
-background:#7b3cff;
-color:white;
-font-weight:bold;
-}
-
-.small{
-font-size:12px;
-opacity:.7;
+footer{
 text-align:center;
-margin-top:5px;
+font-size:12px;
+opacity:.6;
+margin-top:10px;
 }
 </style>
 </head>
 
 <body>
+
 <div class="container">
-<div class="card">
 
-<header>
-<img src="Logo.png?v=5">
+<img src="Logo.png" class="logo">
+
 <h1>Febby AI Studio</h1>
-<h2>UGC AI Generator</h2>
-</header>
-
-<!-- TABS -->
-<div class="tabs">
-<button class="active">Prompt</button>
-<button>Caption</button>
-<button>Hashtag</button>
-<button>Hook</button>
-<button>CTA</button>
-</div>
-
-<select id="lang">
-<option>Indonesia</option>
-<option>English</option>
-<option>Jawa</option>
-<option>Sunda</option>
-</select>
+<h3>UGC AI Generator</h3>
 
 <select id="niche">
 <option>Skincare</option>
 <option>Fashion</option>
 <option>Food</option>
-<option>Gadget</option>
-<option>Affiliate</option>
+<option>Elektronik</option>
+<option>Daily Product</option>
 </select>
 
-<input id="product" placeholder="Nama Produk">
-<input id="benefit" placeholder="Manfaat Produk">
+<input id="produk" placeholder="Nama Produk">
+<input id="manfaat" placeholder="Manfaat Produk">
 
-<div class="row2">
+<div class="row">
 <select id="gender">
 <option>Wanita</option>
 <option>Pria</option>
-<option>Anak</option>
 </select>
 
 <select id="hijab">
@@ -170,113 +99,127 @@ margin-top:5px;
 </select>
 </div>
 
-<input id="style" placeholder="Gaya Video (natural, handheld, indoor)">
+<input id="gaya" placeholder="Gaya Video (natural, handheld, indoor)">
 
-<select id="place">
+<select id="tempat">
 <option>Indoor Rumah</option>
-<option>Kamar Tidur</option>
+<option>Kamar</option>
 <option>Dapur</option>
-<option>Luar Rumah</option>
-<option>Kafe</option>
+<option>Outdoor</option>
+<option>Kantor</option>
 </select>
 
-<h3>Scene + Durasi (detik)</h3>
+<select id="delivery">
+<option>Berbicara + Overlay</option>
+<option>Model Berbicara</option>
+<option>Teks Overlay Saja</option>
+</select>
 
-<div class="scene-grid">
-<input id="d1" placeholder="Durasi 1">
+<h4>Scene + Durasi (detik)</h4>
+
+<div class="scene-row">
+<input type="number" id="d1" placeholder="5">
 <input id="s1" placeholder="Scene 1">
-
-<input id="d2" placeholder="Durasi 2">
+<input type="number" id="d2" placeholder="5">
 <input id="s2" placeholder="Scene 2">
-
-<input id="d3" placeholder="Durasi 3">
+<input type="number" id="d3" placeholder="5">
 <input id="s3" placeholder="Scene 3">
-
-<input id="d4" placeholder="Durasi 4">
+<input type="number" id="d4" placeholder="5">
 <input id="s4" placeholder="Scene 4">
 </div>
 
 <input id="total" placeholder="Total Durasi" readonly>
 
-<button class="btn" onclick="generate()">Generate Prompt</button>
-<button class="btn2" onclick="copyText()">Copy</button>
+<button onclick="generate()">Generate Prompt</button>
+<button onclick="copyText()">Copy</button>
 
-<textarea id="result" placeholder="Hasil akan muncul di sini..."></textarea>
+<textarea id="hasil" placeholder="Hasil akan muncul di sini..."></textarea>
 
-<p class="small">Gratis • Local App • No API</p>
+<footer>Gratis • Local App • No API</footer>
 
-</div>
 </div>
 
 <script>
-
-const hooks=[
-"Wajib coba!",
-"Kok bisa sebagus ini?",
-"Baru tau ada yang kayak gini!",
-"Seriusan ini works!",
-"Kenapa baru nemu sekarang?"
-];
-
-const ctas=[
-"Beli sekarang!",
-"Klik keranjang!",
-"Cek link di bio!",
-"Jangan sampai kehabisan!",
-"Order hari ini!"
-];
+function auto(v,def){return v && v.trim()!=="" ? v : def;}
 
 function generate(){
-let p=document.getElementById("product").value;
-let b=document.getElementById("benefit").value;
-let g=document.getElementById("gender").value;
-let h=document.getElementById("hijab").value;
-let st=document.getElementById("style").value;
-let pl=document.getElementById("place").value;
 
-let d1=Number(document.getElementById("d1").value)||0;
-let d2=Number(document.getElementById("d2").value)||0;
-let d3=Number(document.getElementById("d3").value)||0;
-let d4=Number(document.getElementById("d4").value)||0;
+let produk=auto(produk.value,"Produk Skincare");
+let manfaat=auto(manfaat.value,"membantu meningkatkan kualitas dan penampilan kulit");
+let gaya=auto(gaya.value,"natural, handheld, indoor");
+let tempatVal=auto(tempat.value,"indoor");
+let g=gender.value;
+let h=hijab.value;
 
-let total=d1+d2+d3+d4;
-document.getElementById("total").value=total+" detik";
+let d1v=Number(d1.value)||5;
+let d2v=Number(d2.value)||5;
+let d3v=Number(d3.value)||5;
+let d4v=Number(d4.value)||5;
+
+let s1v=auto(s1.value,"Model memperlihatkan produk");
+let s2v=auto(s2.value,"Close up tekstur produk");
+let s3v=auto(s3.value,"Model mengaplikasikan produk");
+let s4v=auto(s4.value,"Closing + CTA");
+
+let totalDur=d1v+d2v+d3v+d4v;
+total.value=totalDur+" detik";
+
+let deliveryText="";
+if(delivery.value=="Berbicara + Overlay")
+deliveryText="Model berbicara natural ke kamera + teks overlay singkat.";
+if(delivery.value=="Model Berbicara")
+deliveryText="Model berbicara langsung ke kamera tanpa overlay.";
+if(delivery.value=="Teks Overlay Saja")
+deliveryText="Tanpa suara model, gunakan teks overlay besar.";
+
+let hooks=[
+"Stop scroll sekarang!",
+"Produk ini lagi viral!",
+"Seriusan works!",
+"Wajib coba!",
+"Aku baru nemu ini!"
+];
+
+let ctas=[
+"Klik keranjang sekarang!",
+"Checkout sekarang!",
+"Buruan order!",
+"Jangan sampai kehabisan!"
+];
 
 let hook=hooks[Math.floor(Math.random()*hooks.length)];
 let cta=ctas[Math.floor(Math.random()*ctas.length)];
 
-let text=
-`HOOK: ${hook}
+let teks=
+"HOOK:\n"+hook+"\n\n"+
+"Produk: "+produk+"\n"+
+"Manfaat: "+manfaat+"\n"+
+"Model: "+g+" "+h+"\n"+
+"Penyampaian: "+deliveryText+"\n"+
+"Gaya: "+gaya+"\n"+
+"Lokasi: "+tempatVal+"\n\n"+
 
-Produk: ${p}
-Manfaat: ${b}
+"Scene 1 ("+d1v+"s): "+s1v+" | Overlay: "+manfaat+"\n"+
+"Scene 2 ("+d2v+"s): "+s2v+" | Overlay: "+manfaat+"\n"+
+"Scene 3 ("+d3v+"s): "+s3v+" | Overlay: "+manfaat+"\n"+
+"Scene 4 ("+d4v+"s): "+s4v+" | Overlay: "+manfaat+"\n\n"+
 
-Model: ${g} (${h})
-Lokasi: ${pl}
-Gaya: ${st}
+"Total Durasi: "+totalDur+" detik\n\n"+
 
-SCENE 1 (${d1}s): ${s1.value}
-SCENE 2 (${d2}s): ${s2.value}
-SCENE 3 (${d3}s): ${s3.value}
-SCENE 4 (${d4}s): ${s4.value}
+"CAPTION:\n"+
+produk+" membantu "+manfaat+".\n\n"+
 
-CAPTION:
-${p} bikin ${b}. Wajib punya!
+"HASHTAG:\n"+
+"#ugc #fyp #viral #skincare #reviewproduk\n\n"+
 
-HASHTAG:
-#ugc #fyp #viral #${p.replace(" ","")}
+"CTA:\n"+cta;
 
-CTA:
-${cta}`;
-
-document.getElementById("result").value=text;
+hasil.value=teks;
 }
 
 function copyText(){
-navigator.clipboard.writeText(
-document.getElementById("result").value
-);
-alert("Berhasil dicopy!");
+navigator.clipboard.writeText(hasil.value);
+alert("Berhasil disalin!");
 }
 </script>
 
