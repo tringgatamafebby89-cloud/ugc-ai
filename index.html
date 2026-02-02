@@ -11,7 +11,7 @@ body{
   font-family:Arial;
   padding:20px;
 }
-input,textarea,button{
+input, select, textarea, button{
   width:100%;
   margin:8px 0;
   padding:10px;
@@ -23,28 +23,70 @@ button{
   color:black;
   font-weight:bold;
 }
+textarea{
+  height:220px;
+}
+h2{
+  text-align:center;
+}
 </style>
-</head>
 
+</head>
 <body>
 
 <h2>UGC AI Generator</h2>
 
 <input id="product" placeholder="Nama Produk">
+
 <textarea id="desc" placeholder="Deskripsi Produk"></textarea>
+
 <input id="style" placeholder="Gaya Video (natural, handheld, indoor)">
+
+<select id="gender">
+  <option value="woman">Wanita</option>
+  <option value="man">Pria</option>
+  <option value="child">Anak</option>
+</select>
+
+<select id="hijab">
+  <option value="non-hijab">Tanpa Hijab</option>
+  <option value="hijab">Hijab</option>
+</select>
+
 <button onclick="generate()">Generate Prompt</button>
 
-<textarea id="result" rows="12"></textarea>
+<textarea id="result" placeholder="Prompt muncul di sini..."></textarea>
 
 <script>
+
 function generate(){
 
 let p = product.value;
 let d = desc.value;
 let s = style.value;
+let g = gender.value;
+let h = hijab.value;
 
-let prompt=`
+let modelText = "";
+
+if(g=="woman"){
+  modelText = "Adult woman";
+}
+if(g=="man"){
+  modelText = "Adult man";
+}
+if(g=="child"){
+  modelText = "Child";
+}
+
+if(h=="hijab"){
+  modelText += ", wearing hijab";
+}
+
+let prompt = `
+MODEL:
+${modelText}
+
 SCENE 1:
 Close-up product on table.
 Hands enter frame and pick up product.
@@ -70,10 +112,13 @@ Vertical 9:16
 Natural handheld
 Indoor lighting
 No face, hands only
+Use uploaded product image as reference
 `;
 
 result.value = prompt;
+
 }
+
 </script>
 
 </body>
