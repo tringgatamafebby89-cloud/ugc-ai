@@ -1,1 +1,77 @@
-HELLO UGC TEST BERHASIL
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>UGC AI Generator</title>
+<style>
+body{
+  background:#0f172a;
+  color:white;
+  font-family:Arial;
+  padding:20px;
+}
+input,textarea,button{
+  width:100%;
+  margin:8px 0;
+  padding:10px;
+  border-radius:6px;
+  border:none;
+}
+button{
+  background:#22c55e;
+  color:black;
+  font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<h2>UGC AI Generator</h2>
+
+<input id="product" placeholder="Nama Produk">
+<textarea id="desc" placeholder="Deskripsi Produk"></textarea>
+<input id="style" placeholder="Gaya Video (natural, handheld, indoor)">
+<input type="file" id="imageInput">
+<button onclick="generate()">Generate Prompt</button>
+
+<textarea id="result" rows="10"></textarea>
+
+<script>
+function generate(){
+let p=document.getElementById("product").value;
+let d=document.getElementById("desc").value;
+let s=document.getElementById("style").value;
+
+let prompt=`
+SCENE 1:
+Close-up product on table.
+Hands enter frame and pick up product.
+Lighting natural.
+
+SCENE 2:
+Hands rotating product slowly.
+Show details.
+${d}
+
+SCENE 3:
+Hands using product naturally.
+Style: ${s}
+
+SCENE 4:
+Hero shot product center frame.
+Text overlay: ${p}
+
+VIDEO SETTINGS:
+Vertical 9:16
+Natural handheld
+Indoor lighting
+No face, hands only
+`;
+
+document.getElementById("result").value=prompt;
+}
+</script>
+
+</body>
+</html>
