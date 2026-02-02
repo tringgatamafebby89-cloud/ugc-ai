@@ -3,18 +3,24 @@
 <head>
 <meta charset="UTF-8">
 
-<!-- ICON -->
-<link rel="icon" href="icon.png">
-<link rel="apple-touch-icon" href="icon.png">
+<!-- ICON APLIKASI -->
+<link rel="icon" href="icon.png?v=5">
+<link rel="apple-touch-icon" href="icon.png?v=5">
 
 <title>Febby AI Studio</title>
 
 <style>
 body{
-  background: linear-gradient(135deg,#6a0dad,#ff4fd8);
-  font-family: Arial;
+  background: linear-gradient(135deg,#6a00ff,#ff4fd8);
+  min-height:100vh;
   color:white;
+  font-family:Arial, sans-serif;
   padding:20px;
+}
+
+.container{
+  max-width:600px;
+  margin:auto;
 }
 
 .logo{
@@ -28,64 +34,100 @@ h1{
   margin-top:10px;
 }
 
-input,select,textarea,button{
-  width:100%;
-  padding:12px;
-  margin:8px 0;
-  border-radius:10px;
-  border:none;
+h2{
+  text-align:center;
+  font-weight:normal;
+  margin-bottom:25px;
 }
 
-button{
-  background:#00e676;
-  font-weight:bold;
-  font-size:16px;
+input, select, textarea, button{
+  width:100%;
+  margin-top:10px;
+  padding:12px;
+  border-radius:8px;
+  border:none;
+  font-size:14px;
 }
 
 textarea{
-  height:200px;
+  height:220px;
+}
+
+button{
+  background:#22c55e;
+  color:white;
+  font-size:16px;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+button:hover{
+  background:#16a34a;
+}
+
+.footer{
+  text-align:center;
+  margin-top:20px;
+  opacity:0.8;
+  font-size:12px;
 }
 </style>
 </head>
 
 <body>
 
-<img src="icon.png" class="logo">
+<div class="container">
+
+<img src="Logo.png" class="logo">
+
 <h1>Febby AI Studio</h1>
+<h2>UGC AI Generator</h2>
 
 <input id="product" placeholder="Nama Produk">
-<input id="desc" placeholder="Deskripsi / Manfaat Produk">
-<input id="style" placeholder="Gaya Video (natural, indoor, handheld)">
+<input id="desc" placeholder="Deskripsi Produk / Manfaat">
+<input id="style" placeholder="Gaya Video (natural, handheld, indoor)">
 
 <select id="gender">
-  <option value="wanita">Wanita</option>
-  <option value="pria">Pria</option>
-  <option value="anak">Anak</option>
+  <option>Wanita</option>
+  <option>Pria</option>
+  <option>Anak</option>
 </select>
 
 <select id="hijab">
-  <option value="non hijab">Non Hijab</option>
-  <option value="hijab">Hijab</option>
+  <option>Non Hijab</option>
+  <option>Hijab</option>
 </select>
 
-<button onclick="generate()">Generate Prompt</button>
+<button onclick="generatePrompt()">Generate Prompt</button>
 
-<textarea id="result" placeholder="Hasil prompt muncul di sini..."></textarea>
+<textarea id="result" placeholder="Prompt akan muncul di sini..."></textarea>
+
+<div class="footer">
+© 2026 Febby AI Studio
+</div>
+
+</div>
 
 <script>
-function generate(){
-  var product = document.getElementById("product").value;
-  var desc = document.getElementById("desc").value;
-  var style = document.getElementById("style").value;
-  var gender = document.getElementById("gender").value;
-  var hijab = document.getElementById("hijab").value;
+function generatePrompt(){
+  let product = document.getElementById("product").value;
+  let desc = document.getElementById("desc").value;
+  let style = document.getElementById("style").value;
+  let gender = document.getElementById("gender").value;
+  let hijab = document.getElementById("hijab").value;
 
-  var prompt =
-  "Create UGC video of a " + gender + " " + hijab +
-  " reviewing product: " + product +
-  ". Show benefits: " + desc +
-  ". Video style: " + style +
-  ". Natural lighting, handheld phone, vertical 9:16, realistic, no watermark.";
+  let prompt = 
+`Create a vertical UGC video.
+Model: ${gender}, ${hijab}.
+Style: ${style}.
+Scene:
+Model holding ${product}.
+Explain benefits: ${desc}.
+Natural hand movement.
+Soft lighting.
+Indoor setting.
+Talking casually to camera.
+High quality, realistic, 9:16 ratio.`;
 
   document.getElementById("result").value = prompt;
 }
