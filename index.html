@@ -1,111 +1,93 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
 <meta charset="UTF-8">
+
+<!-- ICON -->
 <link rel="icon" href="icon.png">
 <link rel="apple-touch-icon" href="icon.png">
-<title>UGC AI Generator</title>
+
+<title>Febby AI Studio</title>
 
 <style>
 body{
-  background:#0f172a;
+  background: linear-gradient(135deg,#6a0dad,#ff4fd8);
+  font-family: Arial;
   color:white;
-  font-family:Arial;
   padding:20px;
 }
+
+.logo{
+  width:120px;
+  display:block;
+  margin:auto;
+}
+
+h1{
+  text-align:center;
+  margin-top:10px;
+}
+
 input,select,textarea,button{
   width:100%;
+  padding:12px;
   margin:8px 0;
-  padding:10px;
-  border-radius:6px;
+  border-radius:10px;
   border:none;
 }
-button{
-  background:#22c55e;
-  font-size:16px;
-  font-weight:bold;
-}
-textarea{height:220px;}
-</style>
 
+button{
+  background:#00e676;
+  font-weight:bold;
+  font-size:16px;
+}
+
+textarea{
+  height:200px;
+}
+</style>
 </head>
+
 <body>
-<img src="Logo.png" width="120" style="display:block;margin:auto;">
-<h2 style="text-align:center;">Febby AI Studio</h2>
-<h2>UGC AI Generator</h2>
+
+<img src="icon.png" class="logo">
+<h1>Febby AI Studio</h1>
 
 <input id="product" placeholder="Nama Produk">
-<input id="desc" placeholder="Deskripsi Produk / Manfaat">
-<input id="style" placeholder="Gaya Video (natural, handheld, indoor)">
+<input id="desc" placeholder="Deskripsi / Manfaat Produk">
+<input id="style" placeholder="Gaya Video (natural, indoor, handheld)">
 
 <select id="gender">
-  <option value="female">Wanita</option>
-  <option value="male">Pria</option>
-  <option value="child">Anak</option>
+  <option value="wanita">Wanita</option>
+  <option value="pria">Pria</option>
+  <option value="anak">Anak</option>
 </select>
 
 <select id="hijab">
-  <option value="non-hijab">Non Hijab</option>
+  <option value="non hijab">Non Hijab</option>
   <option value="hijab">Hijab</option>
 </select>
 
 <button onclick="generate()">Generate Prompt</button>
 
-<textarea id="result"></textarea>
+<textarea id="result" placeholder="Hasil prompt muncul di sini..."></textarea>
 
 <script>
 function generate(){
+  var product = document.getElementById("product").value;
+  var desc = document.getElementById("desc").value;
+  var style = document.getElementById("style").value;
+  var gender = document.getElementById("gender").value;
+  var hijab = document.getElementById("hijab").value;
 
-let p = product.value;
-let d = desc.value;
-let s = style.value;
-let g = gender.value;
-let h = hijab.value;
+  var prompt =
+  "Create UGC video of a " + gender + " " + hijab +
+  " reviewing product: " + product +
+  ". Show benefits: " + desc +
+  ". Video style: " + style +
+  ". Natural lighting, handheld phone, vertical 9:16, realistic, no watermark.";
 
-let modelText = "";
-
-if(g=="female") modelText="Adult woman";
-if(g=="male") modelText="Adult man";
-if(g=="child") modelText="Child";
-
-if(g=="female"){
-  if(h=="hijab") modelText += " wearing hijab";
-  else modelText += " no hijab";
-}
-
-let prompt = `
-MODEL:
-${modelText}
-
-SCENE 1:
-Close-up product on table.
-Hands enter frame and pick up product.
-Lighting natural.
-
-SCENE 2:
-Hands rotating product slowly.
-Show texture and details.
-${d}
-
-SCENE 3:
-Hands using product naturally.
-Lifestyle indoor.
-Style: ${s}
-
-SCENE 4:
-Hero shot product center frame.
-Clean background.
-Text overlay: ${p}
-
-VIDEO SETTINGS:
-Vertical 9:16
-Natural handheld
-Indoor lighting
-No face, hands only
-`;
-
-document.getElementById("result").value = prompt;
-
+  document.getElementById("result").value = prompt;
 }
 </script>
 
