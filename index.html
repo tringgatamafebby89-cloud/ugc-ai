@@ -12,10 +12,37 @@ background:linear-gradient(135deg,#16001f,#3a005f,#7b2cff);
 color:white;
 }
 
+/* ===== LAYOUT ===== */
 .wrapper{
 display:flex;
-justify-content:center;
 min-height:100vh;
+}
+
+.sidebar{
+width:70px;
+background:#24003a;
+display:flex;
+flex-direction:column;
+align-items:center;
+padding-top:15px;
+}
+
+.sidebar button{
+background:#7b2cff;
+border:none;
+color:white;
+width:45px;
+height:45px;
+border-radius:12px;
+margin:10px 0;
+font-size:20px;
+cursor:pointer;
+}
+
+.main{
+flex:1;
+display:flex;
+justify-content:center;
 padding:20px;
 }
 
@@ -28,6 +55,7 @@ padding:25px;
 box-shadow:0 0 25px #b94bff;
 }
 
+/* ===== UI ===== */
 h1,h2{text-align:center;margin:5px;}
 
 input,select,textarea,button{
@@ -66,9 +94,7 @@ background:#35004f;
 background:#ff4fd8;
 }
 
-.output{
-min-height:140px;
-}
+.output{min-height:140px;}
 
 img.preview{
 width:100%;
@@ -89,12 +115,24 @@ margin-top:15px;
 <body>
 
 <div class="wrapper">
+
+<!-- ===== SIDEBAR ===== -->
+<div class="sidebar">
+<button onclick="showPage('ide')">💡</button>
+<button onclick="showPage('gen')">🎬</button>
+<button onclick="showPage('set')">⚙️</button>
+</div>
+
+<!-- ===== MAIN ===== -->
+<div class="main">
 <div class="card">
 
 <h1>Febby AI Studio PRO+</h1>
 <h2>UGC Prompt Generator</h2>
 
-<!-- IDE -->
+<!-- ===== IDE ===== -->
+<div id="pageIde">
+
 <h3>Generator Ide</h3>
 <select id="ideaNiche">
 <option>Skincare</option>
@@ -106,13 +144,14 @@ margin-top:15px;
 <button onclick="generateIdea()">Generate Ide</button>
 <textarea id="ideaResult"></textarea>
 
-<hr>
+</div>
 
-<!-- PRODUK -->
+<!-- ===== GENERATOR ===== -->
+<div id="pageGen" style="display:none;">
+
 <h3>Detail Produk</h3>
 
 <input id="productName" placeholder="Nama Produk">
-
 <textarea id="benefit" placeholder="Manfaat Produk"></textarea>
 
 <div class="row">
@@ -147,34 +186,28 @@ margin-top:15px;
 <option>Testimoni</option>
 </select>
 
-<!-- FOTO PRODUK -->
 <h3>Foto Produk</h3>
 <select id="productImageType">
-<option value="none">Tidak Pakai Foto Produk</option>
+<option value="none">Tidak Pakai Foto</option>
 <option value="upload">Upload Foto Produk</option>
 </select>
-
 <input type="file" id="productImage" accept="image/*" onchange="previewProduct(this)">
 <img id="productPreview" class="preview">
 
-<!-- FOTO MODEL -->
 <h3>Foto Model</h3>
 <select id="modelImageType">
-<option value="none">Tidak Pakai Foto Model</option>
+<option value="none">Tidak Pakai Foto</option>
 <option value="upload">Upload Foto Model</option>
 </select>
-
 <input type="file" id="modelImage" accept="image/*" onchange="previewModel(this)">
 <img id="modelPreview" class="preview">
 
-<!-- EFEK -->
 <h3>Efek Video</h3>
 <label><input type="checkbox" id="noface"> No Face</label>
 <label><input type="checkbox" id="closeup"> Close Up</label>
 <label><input type="checkbox" id="shake"> Goyang Produk</label>
 <label><input type="checkbox" id="zoomin"> Zoom In</label>
 
-<!-- SCENE -->
 <h3>Scene & Durasi</h3>
 
 <div class="row">
@@ -201,7 +234,6 @@ margin-top:15px;
 
 <button onclick="generateAll()">GENERATE</button>
 
-<!-- TABS -->
 <div class="tabs">
 <button class="active" onclick="setTab('prompt')">Prompt</button>
 <button onclick="setTab('caption')">Caption</button>
@@ -213,77 +245,77 @@ margin-top:15px;
 <textarea id="result" class="output"></textarea>
 <button onclick="copyResult()">COPY</button>
 
+</div>
+
+<!-- ===== SETTINGS ===== -->
+<div id="pageSet" style="display:none;">
+<h3>Pengaturan</h3>
+
+<label>Ganti Warna Background</label>
+<input type="color" onchange="document.body.style.background=this.value">
+
+<label>Upload Background</label>
+<input type="file" accept="image/*" onchange="setBG(this)">
+</div>
+
 <div class="footer">Gratis • Local App • No API</div>
 
 </div>
 </div>
 
-<script>
+</div>
 
+<script>
 let activeTab="prompt";
 
-function setTab(tab){
-activeTab=tab;
+function showPage(p){
+pageIde.style.display="none";
+pageGen.style.display="none";
+pageSet.style.display="none";
+if(p=="ide") pageIde.style.display="block";
+if(p=="gen") pageGen.style.display="block";
+if(p=="set") pageSet.style.display="block";
 }
 
+function setTab(t){activeTab=t;}
+
 function generateIdea(){
-let ideas=[
-"Before After",
-"Tekstur Close Up",
-"Review Jujur",
-"Unboxing",
-"Cara Pakai"
-];
+let ideas=["Before After","Review Jujur","Unboxing","Tekstur Close Up","Cara Pakai"];
 ideaResult.value=ideas[Math.floor(Math.random()*ideas.length)];
 }
 
-/* PREVIEW FOTO */
-function previewProduct(input){
-let img=document.getElementById("productPreview");
-let file=input.files[0];
-if(!file)return;
-let reader=new FileReader();
-reader.onload=function(){
-img.src=reader.result;
-img.style.display="block";
-}
-reader.readAsDataURL(file);
+function previewProduct(i){
+let img=productPreview;
+let f=i.files[0];
+if(!f)return;
+let r=new FileReader();
+r.onload=()=>{img.src=r.result;img.style.display="block";}
+r.readAsDataURL(f);
 }
 
-function previewModel(input){
-let img=document.getElementById("modelPreview");
-let file=input.files[0];
-if(!file)return;
-let reader=new FileReader();
-reader.onload=function(){
-img.src=reader.result;
-img.style.display="block";
-}
-reader.readAsDataURL(file);
+function previewModel(i){
+let img=modelPreview;
+let f=i.files[0];
+if(!f)return;
+let r=new FileReader();
+r.onload=()=>{img.src=r.result;img.style.display="block";}
+r.readAsDataURL(f);
 }
 
 function generateAll(){
-
-let totalDur=
-(+d1.value||0)+(+d2.value||0)+(+d3.value||0)+(+d4.value||0);
+let totalDur=(+d1.value)+(+d2.value)+(+d3.value)+(+d4.value);
 total.value=totalDur+" detik";
 
-let effects=[];
-if(noface.checked) effects.push("no face");
-if(closeup.checked) effects.push("close-up");
-if(shake.checked) effects.push("shake product");
-if(zoomin.checked) effects.push("zoom in");
+let eff=[];
+if(noface.checked) eff.push("no face");
+if(closeup.checked) eff.push("close-up");
+if(shake.checked) eff.push("shake product");
+if(zoomin.checked) eff.push("zoom in");
 
-let productPhotoInfo="";
-let modelPhotoInfo="";
-
-if(productImageType.value=="upload" && productImage.files.length>0){
-productPhotoInfo="Use uploaded product image as main reference. Do not change shape or color.";
-}
-
-if(modelImageType.value=="upload" && modelImage.files.length>0){
-modelPhotoInfo="Use uploaded model image as reference.";
-}
+let pInfo="";
+let mInfo="";
+if(productImageType.value=="upload") pInfo="Use uploaded product image.";
+if(modelImageType.value=="upload") mInfo="Use uploaded model image.";
 
 let prompt=
 `Create ${style.value} video.
@@ -291,16 +323,14 @@ Product: ${productName.value}
 Benefits: ${benefit.value}
 Model: ${modelType.value} ${gender.value}
 Location: ${location.value}
-Effects: ${effects.join(",")}
-${productPhotoInfo}
-${modelPhotoInfo}
+Effects: ${eff.join(",")}
+${pInfo}
+${mInfo}
 
 Scene1 (${d1.value}s): ${s1.value}
 Scene2 (${d2.value}s): ${s2.value}
 Scene3 (${d3.value}s): ${s3.value}
-Scene4 (${d4.value}s): ${s4.value}
-
-Include hook, caption, CTA inside video.`;
+Scene4 (${d4.value}s): ${s4.value}`;
 
 let caption=`${productName.value} bikin kaget 😍`;
 let hashtag=`#ugc #fyp #reviewproduk`;
@@ -319,7 +349,13 @@ navigator.clipboard.writeText(result.value);
 alert("Disalin!");
 }
 
+function setBG(i){
+let f=i.files[0];
+let r=new FileReader();
+r.onload=()=>{document.body.style.background=`url(${r.result}) center/cover no-repeat`;}
+r.readAsDataURL(f);
+}
 </script>
 
 </body>
-</html>
+  </html>
