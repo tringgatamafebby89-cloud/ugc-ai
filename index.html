@@ -3,106 +3,132 @@
 <head>
 <meta charset="UTF-8">
 <title>Febby AI Studio</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <link rel="icon" href="icon.png">
 
 <style>
-*{box-sizing:border-box;font-family:Arial;}
-
 body{
 margin:0;
-min-height:100vh;
-background:linear-gradient(135deg,#12001f,#2b0052,#6a00ff);
-display:flex;
-justify-content:center;
-padding:20px;
+font-family:Arial;
+background:radial-gradient(circle at top,#3a0075,#0b0014);
 color:white;
 }
 
 .container{
-width:100%;
-max-width:720px;
-background:rgba(20,0,40,.95);
-border-radius:20px;
+max-width:900px;
+margin:auto;
 padding:20px;
-box-shadow:0 0 35px rgba(255,0,255,.35);
+}
+
+.card{
+background:#14001f;
+border-radius:16px;
+padding:20px;
+box-shadow:0 0 40px rgba(255,0,255,0.25);
 }
 
 .logo{
-width:120px;
+width:110px;
 display:block;
 margin:auto;
 }
 
-h1,h3{text-align:center;margin:6px 0;}
+h1,h2{text-align:center;margin:8px 0;}
 
-input,select,textarea,button{
+input,select,textarea{
 width:100%;
 padding:10px;
 border-radius:10px;
 border:none;
-margin-top:8px;
-font-size:14px;
+margin:6px 0;
 }
 
-textarea{min-height:140px;}
-
-.row{display:flex;gap:10px;}
-.scene-row{display:grid;grid-template-columns:1fr 3fr;gap:10px;}
+.grid2{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:10px;
+}
 
 button{
-background:linear-gradient(90deg,#ff4fd8,#7a3cff);
+width:100%;
+padding:12px;
+border:none;
+border-radius:12px;
+background:linear-gradient(90deg,#ff4fd8,#7b3cff);
 color:white;
+font-size:16px;
 font-weight:bold;
 cursor:pointer;
+margin-top:10px;
 }
 
 .tabs{
 display:flex;
 gap:6px;
 margin-top:10px;
-flex-wrap:wrap;
 }
 
 .tab{
 flex:1;
-text-align:center;
 padding:8px;
-background:#3a0066;
 border-radius:8px;
+background:#2a003d;
+text-align:center;
 cursor:pointer;
-font-size:13px;
 }
 
 .tab.active{background:#ff4fd8;}
 
-.output{display:none;}
-.output.active{display:block;}
+textarea{min-height:180px;}
 
-footer{text-align:center;font-size:12px;opacity:.6;margin-top:10px;}
+.footer{text-align:center;font-size:12px;opacity:0.6;margin-top:10px;}
 </style>
 </head>
 
 <body>
 
 <div class="container">
+<div class="card">
 
 <img src="Logo.png" class="logo">
-
 <h1>Febby AI Studio</h1>
-<h3>UGC AI Generator</h3>
+<h2>Ultimate Creator Engine</h2>
+
+<!-- IDE GENERATOR -->
+<h3>Generator Ide Konten</h3>
+<select id="ideaCategory">
+<option value="skincare">Ide Skincare</option>
+<option value="fashion">Ide Fashion</option>
+<option value="food">Ide Food</option>
+<option value="gadget">Ide Gadget</option>
+<option value="affiliate">Ide Affiliate</option>
+</select>
+<button onclick="generateIdea()">Generate Ide</button>
+<input id="ideaBox" readonly>
+
+<hr>
+
+<select id="language">
+<option>Bahasa Indonesia</option>
+<option>English</option>
+<option>Bahasa Jawa</option>
+<option>Bahasa Sunda</option>
+</select>
 
 <select id="niche">
 <option>Skincare</option>
 <option>Fashion</option>
 <option>Food</option>
-<option>Elektronik</option>
+<option>Gadget</option>
+<option>Beauty</option>
+<option>Health</option>
 </select>
 
-<input id="produk" placeholder="Nama Produk">
-<input id="manfaat" placeholder="Manfaat Produk">
+<input id="product" placeholder="Nama Produk">
+<input id="benefit" placeholder="Manfaat Produk">
 
-<div class="row">
+<div class="grid2">
 <select id="gender">
 <option>Wanita</option>
 <option>Pria</option>
@@ -114,90 +140,179 @@ footer{text-align:center;font-size:12px;opacity:.6;margin-top:10px;}
 </select>
 </div>
 
-<input id="gaya" placeholder="Gaya Video (natural, handheld, indoor)">
+<select id="market">
+<option>Remaja</option>
+<option>Ibu-ibu</option>
+<option>Pria Dewasa</option>
+<option>Dewasa</option>
+<option>Semua Target</option>
+</select>
 
-<select id="tempat">
+<select id="emotion">
+<option>Soft Selling</option>
+<option>Excited</option>
+<option>Friendly</option>
+<option>Meyakinkan</option>
+<option>Profesional</option>
+</select>
+
+<select id="location">
 <option>Indoor Rumah</option>
-<option>Kamar</option>
+<option>Kamar Tidur</option>
 <option>Dapur</option>
 <option>Outdoor</option>
+<option>Kafe</option>
+</select>
+
+<select id="style">
+<option>Natural UGC</option>
+<option>Handheld</option>
+<option>Cinematic</option>
+<option>Close Up Product</option>
 </select>
 
 <select id="delivery">
+<option>Berbicara</option>
+<option>Overlay Teks</option>
 <option>Berbicara + Overlay</option>
-<option>Model Berbicara</option>
-<option>Teks Overlay</option>
 </select>
 
-<h4>Scene + Durasi (detik)</h4>
+<h3>Scene + Durasi (detik)</h3>
 
-<div class="scene-row">
-<input type="number" id="d1" value="5"><input id="s1" placeholder="Scene 1">
-<input type="number" id="d2" value="5"><input id="s2" placeholder="Scene 2">
-<input type="number" id="d3" value="5"><input id="s3" placeholder="Scene 3">
-<input type="number" id="d4" value="5"><input id="s4" placeholder="Scene 4">
+<div class="grid2">
+<input id="d1" value="5"><input id="s1" placeholder="Scene 1">
+</div>
+<div class="grid2">
+<input id="d2" value="5"><input id="s2" placeholder="Scene 2">
+</div>
+<div class="grid2">
+<input id="d3" value="5"><input id="s3" placeholder="Scene 3">
+</div>
+<div class="grid2">
+<input id="d4" value="5"><input id="s4" placeholder="Scene 4">
 </div>
 
-<input id="total" placeholder="Total Durasi" readonly>
+<input id="total" readonly>
 
-<button onclick="generate()">Generate</button>
+<button onclick="generateAll()">GENERATE ALL</button>
 
 <div class="tabs">
-<div class="tab active" onclick="openTab(0)">Prompt</div>
-<div class="tab" onclick="openTab(1)">Caption</div>
-<div class="tab" onclick="openTab(2)">Hashtag</div>
-<div class="tab" onclick="openTab(3)">Hook</div>
-<div class="tab" onclick="openTab(4)">CTA</div>
+<div class="tab active" onclick="switchTab('prompt')">Prompt</div>
+<div class="tab" onclick="switchTab('caption')">Caption</div>
+<div class="tab" onclick="switchTab('hashtag')">Hashtag</div>
+<div class="tab" onclick="switchTab('hook')">Hook</div>
+<div class="tab" onclick="switchTab('cta')">CTA</div>
 </div>
 
-<textarea id="o1" class="output active"></textarea>
-<textarea id="o2" class="output"></textarea>
-<textarea id="o3" class="output"></textarea>
-<textarea id="o4" class="output"></textarea>
-<textarea id="o5" class="output"></textarea>
+<textarea id="output"></textarea>
+<button onclick="copyText()">COPY</button>
 
-<footer>Gratis • Local App • No API</footer>
+<div class="footer">Gratis • Local App • No API</div>
 
+</div>
 </div>
 
 <script>
+const hooks=[
+"Stop scroll!",
+"Kamu harus tau ini!",
+"Produk ini lagi viral!",
+"Aku baru nemu ini!",
+"Seriusan works!"
+];
 
-function openTab(i){
-document.querySelectorAll('.tab').forEach((t,n)=>t.classList.toggle('active',n==i));
-document.querySelectorAll('.output').forEach((o,n)=>o.classList.toggle('active',n==i));
+const ctas=[
+"Klik keranjang sekarang!",
+"Checkout sekarang!",
+"Buruan order!",
+"Jangan sampai kehabisan!"
+];
+
+const ideaData={
+skincare:["Before after","Review jujur","Tekstur close-up","Cara pakai","Produk viral works"],
+fashion:["Try on haul","OOTD","Mix & match","Detail bahan","Outfit viral"],
+food:["Mukbang","Review rasa","ASMR","Unboxing","Makanan viral"],
+gadget:["Unboxing","First impression","Tes fitur","Review jujur","Worth it?" ],
+affiliate:["Produk viral","Masalah vs solusi","Demo pakai","Barang wajib punya","Best seller"]
+};
+
+function generateIdea(){
+let cat=ideaCategory.value;
+let arr=ideaData[cat];
+ideaBox.value=arr[Math.floor(Math.random()*arr.length)];
 }
 
-function def(v,d){return v&&v.trim()!=""?v:d;}
+function generateAll(){
 
-function generate(){
-
-let produk=def(produk.value,"Produk Skincare");
-let manfaat=def(manfaat.value,"membantu mencerahkan dan menyehatkan kulit");
-
-let d1v=+d1.value||5,d2v=+d2.value||5,d3v=+d3.value||5,d4v=+d4.value||5;
+let d1v=+d1.value||0,d2v=+d2.value||0,d3v=+d3.value||0,d4v=+d4.value||0;
 total.value=(d1v+d2v+d3v+d4v)+" detik";
 
-let prompt=
-"UGC video tentang "+produk+
-", manfaat: "+manfaat+
-", model "+gender.value+" "+hijab.value+
-", lokasi "+tempat.value+
-", gaya "+gaya.value+
-", "+delivery.value+
-". Scene: "+s1.value+", "+s2.value+", "+s3.value+", "+s4.value;
+let hook=hooks[Math.floor(Math.random()*hooks.length)];
+let cta=ctas[Math.floor(Math.random()*ctas.length)];
 
-let hooks=["Stop scroll!","Produk ini viral!","Aku baru nemu ini!","Serius works!"];
-let ctas=["Klik keranjang!","Checkout sekarang!","Buruan order!"];
+let prompt=`
+Create UGC video.
 
-o1.value=prompt;
-o2.value=produk+" bikin kulit jadi lebih sehat dan glowing.";
-o3.value="#ugc #fyp #viral #skincare #review";
-o4.value=hooks[Math.floor(Math.random()*hooks.length)];
-o5.value=ctas[Math.floor(Math.random()*ctas.length)];
+Language: ${language.value}
+Niche: ${niche.value}
+Product: ${product.value}
+Benefit: ${benefit.value}
 
+Model: ${gender.value} ${hijab.value}
+Target Market: ${market.value}
+Emotion: ${emotion.value}
+Location: ${location.value}
+Style: ${style.value}
+Delivery: ${delivery.value}
+
+HOOK:
+"${hook}"
+
+SCENES:
+1. ${s1.value} (${d1v}s)
+2. ${s2.value} (${d2v}s)
+3. ${s3.value} (${d3v}s)
+4. ${s4.value} (${d4v}s)
+
+Overlay highlight benefits.
+
+Ending CTA:
+"${cta}"
+
+Vertical 9:16, realistic UGC, natural lighting.
+`;
+
+let caption=`${hook}
+
+${product.value}
+${benefit.value}
+
+${cta}`;
+
+let hashtag=`#fyp #ugc #${niche.value} #viral #tiktokshop`;
+
+window.data={
+prompt:prompt,
+caption:caption,
+hashtag:hashtag,
+hook:hook,
+cta:cta
+};
+
+output.value=prompt;
 }
 
+function switchTab(t){
+document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
+event.target.classList.add("active");
+output.value=window.data[t];
+}
+
+function copyText(){
+navigator.clipboard.writeText(output.value);
+alert("Copied!");
+}
 </script>
 
 </body>
-</html>
+  </html>
