@@ -4,117 +4,160 @@
 <meta charset="UTF-8">
 <title>Febby AI Studio</title>
 
-<link rel="icon" href="icon.png">
-<link rel="apple-touch-icon" href="icon.png">
+<!-- ICON -->
+<link rel="icon" href="icon.png?v=5">
+<link rel="apple-touch-icon" href="icon.png?v=5">
 
 <style>
 body{
 margin:0;
-font-family:Arial;
-background:linear-gradient(-45deg,#12001f,#2a0040,#3a0060,#12001f);
-background-size:400% 400%;
-animation:bg 12s ease infinite;
+min-height:100vh;
+background:linear-gradient(135deg,#120018,#2b0040,#5a0088);
+font-family:Arial, sans-serif;
 color:white;
+display:flex;
+justify-content:center;
 }
-@keyframes bg{
-0%{background-position:0% 50%}
-50%{background-position:100% 50%}
-100%{background-position:0% 50%}
+
+.container{
+width:100%;
+max-width:430px;
+padding:15px;
+}
+
+.card{
+background:rgba(0,0,0,0.55);
+padding:18px;
+border-radius:14px;
+box-shadow:0 0 20px rgba(255,0,255,.2);
 }
 
 header{
 text-align:center;
-padding:15px;
+margin-bottom:15px;
+}
+
+header img{
+width:90px;
+display:block;
+margin:auto;
+}
+
+h1{
+margin:8px 0 3px;
 font-size:22px;
-font-weight:bold;
 }
 
-nav{
-display:flex;
-justify-content:space-around;
-background:#1a0030;
-padding:10px;
-}
-
-nav button{
-background:none;
-border:none;
-color:white;
+h2{
+margin:0;
 font-size:14px;
+font-weight:normal;
+opacity:.8;
 }
-nav button.active{color:#ff5fd7;}
 
-section{display:none;padding:15px;}
-section.active{display:block;}
-
-.card{
-background:rgba(0,0,0,0.55);
-padding:15px;
-border-radius:12px;
+.tabs{
+display:flex;
+gap:6px;
 margin-bottom:10px;
+}
+
+.tabs button{
+flex:1;
+padding:8px;
+background:#3a005c;
+color:white;
+border:none;
+border-radius:8px;
+font-size:13px;
+}
+
+.tabs button.active{
+background:#ff4fd8;
 }
 
 input,select,textarea,button{
 width:100%;
 padding:10px;
-margin:5px 0;
+margin:6px 0;
 border-radius:8px;
 border:none;
+box-sizing:border-box;
+font-size:14px;
 }
 
-button{
-background:#ff5fd7;
+textarea{min-height:130px}
+
+.row2{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:8px;
+}
+
+.scene-grid{
+display:grid;
+grid-template-columns:1fr 3fr;
+gap:8px;
+}
+
+.btn{
+background:#ff4fd8;
 color:white;
 font-weight:bold;
 }
 
-textarea{height:150px;}
-
-.row{
-display:flex;
-gap:10px;
+.btn2{
+background:#7b3cff;
+color:white;
+font-weight:bold;
 }
-.row>*{flex:1;}
 
-.scene-grid{
-display:grid;
-grid-template-columns:1fr 2fr;
-gap:8px;
+.small{
+font-size:12px;
+opacity:.7;
+text-align:center;
+margin-top:5px;
 }
 </style>
 </head>
 
 <body>
-
-<header>Febby AI Studio</header>
-
-<nav>
-<button class="active" onclick="showTab('prompt')">Prompt</button>
-<button onclick="showTab('caption')">Caption</button>
-<button onclick="showTab('hashtag')">Hashtag</button>
-<button onclick="showTab('hook')">Hook</button>
-<button onclick="showTab('cta')">CTA</button>
-<button onclick="showTab('history')">History</button>
-</nav>
-
-<!-- PROMPT -->
-<section id="prompt" class="active">
+<div class="container">
 <div class="card">
+
+<header>
+<img src="Logo.png?v=5">
+<h1>Febby AI Studio</h1>
+<h2>UGC AI Generator</h2>
+</header>
+
+<!-- TABS -->
+<div class="tabs">
+<button class="active">Prompt</button>
+<button>Caption</button>
+<button>Hashtag</button>
+<button>Hook</button>
+<button>CTA</button>
+</div>
+
+<select id="lang">
+<option>Indonesia</option>
+<option>English</option>
+<option>Jawa</option>
+<option>Sunda</option>
+</select>
 
 <select id="niche">
 <option>Skincare</option>
 <option>Fashion</option>
 <option>Food</option>
-<option>Elektronik</option>
-<option>Baby Care</option>
-<option>Fitness</option>
-<option>Otomotif</option>
+<option>Gadget</option>
+<option>Affiliate</option>
 </select>
 
 <input id="product" placeholder="Nama Produk">
 <input id="benefit" placeholder="Manfaat Produk">
 
-<div class="row">
+<div class="row2">
 <select id="gender">
 <option>Wanita</option>
 <option>Pria</option>
@@ -129,186 +172,112 @@ gap:8px;
 
 <input id="style" placeholder="Gaya Video (natural, handheld, indoor)">
 
-<select id="location">
+<select id="place">
 <option>Indoor Rumah</option>
 <option>Kamar Tidur</option>
 <option>Dapur</option>
-<option>Ruang Tamu</option>
-<option>Kamar Mandi</option>
-<option>Outdoor Halaman</option>
-<option>Cafe</option>
-<option>Kantor</option>
+<option>Luar Rumah</option>
+<option>Kafe</option>
 </select>
 
-<h4>Scene + Durasi</h4>
+<h3>Scene + Durasi (detik)</h3>
 
 <div class="scene-grid">
-<input id="d1" placeholder="5s">
+<input id="d1" placeholder="Durasi 1">
 <input id="s1" placeholder="Scene 1">
 
-<input id="d2" placeholder="5s">
+<input id="d2" placeholder="Durasi 2">
 <input id="s2" placeholder="Scene 2">
 
-<input id="d3" placeholder="5s">
+<input id="d3" placeholder="Durasi 3">
 <input id="s3" placeholder="Scene 3">
 
-<input id="d4" placeholder="5s">
+<input id="d4" placeholder="Durasi 4">
 <input id="s4" placeholder="Scene 4">
 </div>
 
-<input id="totalDuration" placeholder="Total Durasi" readonly>
+<input id="total" placeholder="Total Durasi" readonly>
 
-<button onclick="generatePrompt()">Generate Prompt</button>
-<button onclick="copyText('result')">Copy</button>
+<button class="btn" onclick="generate()">Generate Prompt</button>
+<button class="btn2" onclick="copyText()">Copy</button>
 
-<textarea id="result"></textarea>
+<textarea id="result" placeholder="Hasil akan muncul di sini..."></textarea>
+
+<p class="small">Gratis • Local App • No API</p>
 
 </div>
-</section>
-
-<!-- CAPTION -->
-<section id="caption">
-<div class="card">
-<input id="capProduct" placeholder="Nama Produk">
-<input id="capBenefit" placeholder="Manfaat">
-<button onclick="generateCaption()">Generate</button>
-<button onclick="copyText('captionResult')">Copy</button>
-<textarea id="captionResult"></textarea>
 </div>
-</section>
-
-<!-- HASHTAG -->
-<section id="hashtag">
-<div class="card">
-<input id="hashProduct" placeholder="Nama Produk / Niche">
-<button onclick="generateHashtag()">Generate</button>
-<button onclick="copyText('hashtagResult')">Copy</button>
-<textarea id="hashtagResult"></textarea>
-</div>
-</section>
-
-<!-- HOOK -->
-<section id="hook">
-<div class="card">
-<button onclick="randomHook()">Random Hook</button>
-<button onclick="copyText('hookResult')">Copy</button>
-<textarea id="hookResult"></textarea>
-</div>
-</section>
-
-<!-- CTA -->
-<section id="cta">
-<div class="card">
-<button onclick="randomCTA()">Generate CTA</button>
-<button onclick="copyText('ctaResult')">Copy</button>
-<textarea id="ctaResult"></textarea>
-</div>
-</section>
-
-<!-- HISTORY -->
-<section id="history">
-<div class="card" id="historyList"></div>
-</section>
 
 <script>
-function showTab(id){
-document.querySelectorAll("section").forEach(s=>s.classList.remove("active"));
-document.getElementById(id).classList.add("active");
-document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));
-event.target.classList.add("active");
+
+const hooks=[
+"Wajib coba!",
+"Kok bisa sebagus ini?",
+"Baru tau ada yang kayak gini!",
+"Seriusan ini works!",
+"Kenapa baru nemu sekarang?"
+];
+
+const ctas=[
+"Beli sekarang!",
+"Klik keranjang!",
+"Cek link di bio!",
+"Jangan sampai kehabisan!",
+"Order hari ini!"
+];
+
+function generate(){
+let p=document.getElementById("product").value;
+let b=document.getElementById("benefit").value;
+let g=document.getElementById("gender").value;
+let h=document.getElementById("hijab").value;
+let st=document.getElementById("style").value;
+let pl=document.getElementById("place").value;
+
+let d1=Number(document.getElementById("d1").value)||0;
+let d2=Number(document.getElementById("d2").value)||0;
+let d3=Number(document.getElementById("d3").value)||0;
+let d4=Number(document.getElementById("d4").value)||0;
+
+let total=d1+d2+d3+d4;
+document.getElementById("total").value=total+" detik";
+
+let hook=hooks[Math.floor(Math.random()*hooks.length)];
+let cta=ctas[Math.floor(Math.random()*ctas.length)];
+
+let text=
+`HOOK: ${hook}
+
+Produk: ${p}
+Manfaat: ${b}
+
+Model: ${g} (${h})
+Lokasi: ${pl}
+Gaya: ${st}
+
+SCENE 1 (${d1}s): ${s1.value}
+SCENE 2 (${d2}s): ${s2.value}
+SCENE 3 (${d3}s): ${s3.value}
+SCENE 4 (${d4}s): ${s4.value}
+
+CAPTION:
+${p} bikin ${b}. Wajib punya!
+
+HASHTAG:
+#ugc #fyp #viral #${p.replace(" ","")}
+
+CTA:
+${cta}`;
+
+document.getElementById("result").value=text;
 }
 
-function generatePrompt(){
-let t1=parseInt(d1.value)||0;
-let t2=parseInt(d2.value)||0;
-let t3=parseInt(d3.value)||0;
-let t4=parseInt(d4.value)||0;
-let total=t1+t2+t3+t4;
-totalDuration.value=total+"s";
-
-let txt=
-`Niche: ${niche.value}
-Produk: ${product.value}
-Manfaat: ${benefit.value}
-Model: ${gender.value} ${hijab.value}
-Gaya: ${style.value}
-Lokasi: ${location.value}
-
-Scene:
-1. (${d1.value}) ${s1.value}
-2. (${d2.value}) ${s2.value}
-3. (${d3.value}) ${s3.value}
-4. (${d4.value}) ${s4.value}
-
-Total Durasi: ${total}s
-Video vertikal 9:16, natural, realistis.`;
-
-result.value=txt;
-saveHistory(txt);
+function copyText(){
+navigator.clipboard.writeText(
+document.getElementById("result").value
+);
+alert("Berhasil dicopy!");
 }
-
-/* Caption */
-function generateCaption(){
-captionResult.value=
-`${capProduct.value}
-${capBenefit.value}
-
-Produk viral!
-Yuk checkout sekarang 🔥`;
-}
-
-/* Hashtag */
-function generateHashtag(){
-hashtagResult.value=
-`#${hashProduct.value.replace(" ","")}
-#ugc
-#fyp
-#viral
-#tiktokshop
-#kontencreator`;
-}
-
-/* Hook */
-let hooks=["Stop scroll!","Produk ini viral!","Seriusan bagus!","Wajib coba!","Aku baru nemu ini!"];
-function randomHook(){
-hookResult.value=hooks[Math.floor(Math.random()*hooks.length)];
-}
-
-/* CTA */
-let ctas=["Klik keranjang sekarang!","Checkout sekarang!","Jangan sampai kehabisan!","Buruan order!"];
-function randomCTA(){
-ctaResult.value=ctas[Math.floor(Math.random()*ctas.length)];
-}
-
-/* Copy */
-function copyText(id){
-let el=document.getElementById(id);
-el.select();
-document.execCommand("copy");
-alert("Disalin!");
-}
-
-/* History */
-function saveHistory(text){
-let h=JSON.parse(localStorage.getItem("history")||"[]");
-h.unshift(text);
-localStorage.setItem("history",JSON.stringify(h));
-loadHistory();
-}
-function loadHistory(){
-let h=JSON.parse(localStorage.getItem("history")||"[]");
-let out="";
-h.forEach((x,i)=>{
-out+=`<div><button onclick="useHistory(${i})">Use</button><br>${x}</div><hr>`;
-});
-historyList.innerHTML=out;
-}
-function useHistory(i){
-let h=JSON.parse(localStorage.getItem("history"));
-result.value=h[i];
-showTab("prompt");
-}
-loadHistory();
 </script>
 
 </body>
