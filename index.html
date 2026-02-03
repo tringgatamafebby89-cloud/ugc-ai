@@ -7,21 +7,22 @@
 <style>
 body{
 margin:0;
-font-family:Arial, sans-serif;
-background:linear-gradient(135deg,#1a002a,#3b0070,#7a2cff);
+font-family:Arial;
+background:linear-gradient(135deg,#16001f,#3a005f,#7b2cff);
 color:white;
-transition:0.3s;
 }
 
 .wrapper{display:flex;min-height:100vh;}
+
 .sidebar{
 width:70px;
-background:#220033;
+background:#230035;
 display:flex;
 flex-direction:column;
 align-items:center;
 padding-top:15px;
 }
+
 .sidebar button{
 background:none;border:none;
 color:white;font-size:22px;
@@ -29,20 +30,15 @@ margin:15px 0;
 cursor:pointer;
 }
 
-.main{
-flex:1;
-display:flex;
-justify-content:center;
-padding:20px;
-}
+.main{flex:1;display:flex;justify-content:center;padding:20px;}
 
 .card{
 width:100%;
 max-width:900px;
-background:rgba(0,0,0,0.6);
-border-radius:20px;
+background:rgba(0,0,0,.6);
 padding:25px;
-box-shadow:0 0 30px #c36bff;
+border-radius:20px;
+box-shadow:0 0 25px #b94bff;
 }
 
 h1,h2,h3{text-align:center;}
@@ -53,10 +49,10 @@ padding:12px;
 border-radius:10px;
 border:none;
 margin-top:10px;
-font-size:15px;
+font-size:14px;
 }
 
-textarea{min-height:90px;resize:vertical;}
+textarea{min-height:100px;}
 
 .row{display:flex;gap:10px;}
 
@@ -71,16 +67,14 @@ cursor:pointer;
 .tabs button{flex:1;background:#30004f;}
 .tabs button.active{background:#ff4fd8;}
 
-.output{min-height:150px;}
-
-img.preview{
+.preview{
 width:120px;
 margin-top:8px;
 border-radius:10px;
-box-shadow:0 0 8px #fff;
+display:none;
 }
 
-.footer{text-align:center;font-size:12px;opacity:0.7;margin-top:15px;}
+.footer{text-align:center;font-size:12px;opacity:.7;margin-top:15px;}
 </style>
 </head>
 
@@ -88,43 +82,46 @@ box-shadow:0 0 8px #fff;
 
 <div class="wrapper">
 
-<!-- SIDEBAR -->
 <div class="sidebar">
-<button onclick="show('generator')">🎬</button>
-<button onclick="show('settings')">⚙️</button>
+<button onclick="openPage('gen')">🎬</button>
+<button onclick="openPage('set')">⚙️</button>
 </div>
 
 <div class="main">
 <div class="card">
 
 <h1>Febby AI Studio PRO+</h1>
-<h2>UGC Ultimate Creator Engine</h2>
+<h2>UGC Generator Engine</h2>
 
 <!-- ================= GENERATOR ================= -->
-<div id="generator">
+<div id="gen">
 
-<h3>Detail Produk</h3>
+<h3>Produk</h3>
 
 <div class="row">
-<select id="language">
+<select id="lang">
 <option>Indonesia</option>
 <option>English</option>
 <option>Sunda</option>
 <option>Jawa</option>
 </select>
 
-<select id="category">
-<option>Skincare</option>
+<select id="cat">
 <option>Fashion</option>
-<option>Food</option>
+<option>Skincare</option>
+<option>Tas</option>
+<option>Baju</option>
+<option>Sepatu</option>
+<option>Aksesoris</option>
 <option>Elektronik</option>
-<option>Affiliate</option>
+<option>Food</option>
 </select>
 </div>
 
 <input id="product" placeholder="Nama Produk">
+<textarea id="benefit" placeholder="Manfaat Produk"></textarea>
 
-<textarea id="benefit" placeholder="Manfaat Produk (boleh banyak baris)"></textarea>
+<h3>Model</h3>
 
 <div class="row">
 <select id="gender">
@@ -132,6 +129,22 @@ box-shadow:0 0 8px #fff;
 <option>Pria</option>
 </select>
 
+<select id="age">
+<option>Anak</option>
+<option>Remaja</option>
+<option>Dewasa</option>
+<option>Ibu</option>
+</select>
+
+<select id="character">
+<option>Casual</option>
+<option>Elegant</option>
+<option>Cute</option>
+<option>Professional</option>
+</select>
+</div>
+
+<div class="row">
 <select id="hijab">
 <option>Non Hijab</option>
 <option>Hijab</option>
@@ -149,7 +162,6 @@ box-shadow:0 0 8px #fff;
 <option>Studio</option>
 <option>Kamar Tidur</option>
 <option>Dapur</option>
-<option>Ruang Tamu</option>
 <option>Outdoor</option>
 <option>Cafe</option>
 <option>Toko</option>
@@ -170,83 +182,75 @@ box-shadow:0 0 8px #fff;
 <option>Tanpa Suara</option>
 </select>
 
-<h3>Foto Produk</h3>
+<h3>Upload</h3>
+Foto Produk
 <input type="file" onchange="preview(this,'pPrev')">
 <img id="pPrev" class="preview">
 
-<h3>Foto Model</h3>
+Foto Model
 <input type="file" onchange="preview(this,'mPrev')">
 <img id="mPrev" class="preview">
 
-<h3>Efek Video</h3>
-<label><input type="checkbox" id="noface"> No Face</label><br>
-<label><input type="checkbox" id="closeup"> Close Up</label><br>
-<label><input type="checkbox" id="shake"> Goyang Produk</label><br>
-<label><input type="checkbox" id="zoom"> Zoom In/Out</label>
+<h3>Efek</h3>
+<label><input type="checkbox" id="fx_noface"> No Face</label><br>
+<label><input type="checkbox" id="fx_closeup"> Close Up</label><br>
+<label><input type="checkbox" id="fx_medium"> Medium Shot</label><br>
+<label><input type="checkbox" id="fx_full"> Full Body</label><br>
+<label><input type="checkbox" id="fx_shake"> Goyang Produk</label><br>
+<label><input type="checkbox" id="fx_pan"> Slow Pan</label><br>
+<label><input type="checkbox" id="fx_zoomin"> Zoom In</label><br>
+<label><input type="checkbox" id="fx_zoomout"> Zoom Out</label><br>
+<label><input type="checkbox" id="fx_asmr"> ASMR</label>
 
-<h3>Scene & Durasi (detik)</h3>
+<h3>Scene</h3>
 
 <div class="row"><input id="d1" value="3"><input id="s1" placeholder="Scene 1"></div>
 <div class="row"><input id="d2" value="3"><input id="s2" placeholder="Scene 2"></div>
 <div class="row"><input id="d3" value="3"><input id="s3" placeholder="Scene 3"></div>
 <div class="row"><input id="d4" value="3"><input id="s4" placeholder="Scene 4"></div>
 
-<input id="total" placeholder="Total Durasi (auto)">
+<input id="total" placeholder="Total Durasi">
 
 <button onclick="generate()">GENERATE</button>
 
 <div class="tabs">
-<button class="active" onclick="setTab('prompt')">Prompt</button>
-<button onclick="setTab('caption')">Caption</button>
-<button onclick="setTab('hashtag')">Hashtag</button>
-<button onclick="setTab('hook')">Hook</button>
-<button onclick="setTab('cta')">CTA</button>
+<button class="active" onclick="setTab('prompt',this)">Prompt</button>
+<button onclick="setTab('caption',this)">Caption</button>
+<button onclick="setTab('hashtag',this)">Hashtag</button>
+<button onclick="setTab('hook',this)">Hook</button>
+<button onclick="setTab('cta',this)">CTA</button>
 </div>
 
-<textarea id="result" class="output"></textarea>
-
-<button onclick="copy()">COPY</button>
+<textarea id="output"></textarea>
+<button onclick="copyText()">COPY</button>
 
 </div>
 
 <!-- ================= SETTINGS ================= -->
-<div id="settings" style="display:none">
+<div id="set" style="display:none">
 
 <h3>Pengaturan</h3>
 
-<label>Tema Warna</label>
+Tema:
 <select onchange="setTheme(this.value)">
-<option value="purple">Ungu</option>
-<option value="blue">Biru</option>
-<option value="pink">Pink</option>
-<option value="black">Hitam</option>
+<option>Ungu</option>
+<option>Biru</option>
+<option>Pink</option>
+<option>Hitam</option>
 </select>
 
-<label>Background Warna</label>
-<input type="color" onchange="document.body.style.background=this.value">
-
-<label>Upload Background</label>
-<input type="file" onchange="bgUpload(this)">
-
-<label>Resolusi Video</label>
+Resolusi:
 <select id="res">
 <option>720p</option>
 <option>1080p</option>
 <option>4K</option>
 </select>
 
-<label>Quality</label>
+Quality:
 <select id="quality">
 <option>Medium</option>
 <option>High</option>
 <option>Ultra</option>
-</select>
-
-<label>Prompt Mode</label>
-<select id="pmode">
-<option>Singkat</option>
-<option>Detail</option>
-<option>Super Detail</option>
 </select>
 
 </div>
@@ -258,49 +262,66 @@ box-shadow:0 0 8px #fff;
 </div>
 
 <script>
-let tab="prompt";
+let activeTab="prompt";
+let DATA={prompt:"",caption:"",hashtag:"",hook:"",cta:""};
 
-function show(x){
-generator.style.display="none";
-settings.style.display="none";
-document.getElementById(x).style.display="block";
+function openPage(p){
+gen.style.display="none";
+set.style.display="none";
+document.getElementById(p).style.display="block";
 }
 
-function setTab(t){
-tab=t;
+function setTab(t,el){
+activeTab=t;
 document.querySelectorAll(".tabs button").forEach(b=>b.classList.remove("active"));
-event.target.classList.add("active");
+el.classList.add("active");
+output.value=DATA[t];
 }
 
-function preview(input,id){
-let f=input.files[0];
+function preview(i,id){
+let f=i.files[0];
+if(!f)return;
 let r=new FileReader();
-r.onload=()=>document.getElementById(id).src=r.result;
+r.onload=()=>{
+document.getElementById(id).src=r.result;
+document.getElementById(id).style.display="block";
+}
 r.readAsDataURL(f);
 }
 
 function generate(){
-let total=
-(+d1.value||0)+(+d2.value||0)+(+d3.value||0)+(+d4.value||0);
-document.getElementById("total").value=total+" detik";
+
+let total=(+d1.value||0)+(+d2.value||0)+(+d3.value||0)+(+d4.value||0);
+total.value=total+" detik";
 
 let fx=[];
-if(noface.checked)fx.push("no face");
-if(closeup.checked)fx.push("close-up");
-if(shake.checked)fx.push("shake product");
-if(zoom.checked)fx.push("zoom in/out");
+if(fx_noface.checked)fx.push("no face");
+if(fx_closeup.checked)fx.push("close-up");
+if(fx_medium.checked)fx.push("medium shot");
+if(fx_full.checked)fx.push("full body");
+if(fx_shake.checked)fx.push("shake product");
+if(fx_pan.checked)fx.push("slow pan");
+if(fx_zoomin.checked)fx.push("zoom in");
+if(fx_zoomout.checked)fx.push("zoom out");
+if(fx_asmr.checked)fx.push("asmr");
 
-let prompt=
+DATA.prompt=
 `Create ${style.value} UGC video.
-Language: ${language.value}
+Language: ${lang.value}
+Category: ${cat.value}
 Product: ${product.value}
 Benefits: ${benefit.value}
-Model: ${modeltype.value}
+
+Model:
 Gender: ${gender.value}
+Age: ${age.value}
+Character: ${character.value}
 Hijab: ${hijab.value}
+Type: ${modeltype.value}
+
 Location: ${location.value}
 Voice: ${voice.value}
-Effects: ${fx.join(",")}
+Effects: ${fx.join(", ")}
 Resolution: ${res.value}
 Quality: ${quality.value}
 
@@ -310,34 +331,24 @@ Scene3 (${d3.value}s): ${s3.value}
 Scene4 (${d4.value}s): ${s4.value}
 `;
 
-let caption=`Aku baru coba ${product.value} dan ternyata bagus banget 😍`;
-let hashtag=`#ugc #reviewproduk #fyp #${category.value}`;
-let hook=`Stop scroll! Produk ini bikin beda 🔥`;
-let cta=`Klik keranjang sekarang!`;
+DATA.caption=`Aku baru coba ${product.value} dan ternyata bagus banget 😍`;
+DATA.hashtag=`#fyp #ugc #${cat.value.toLowerCase()} #reviewproduk`;
+DATA.hook=`Stop scroll! Produk ini bikin beda 🔥`;
+DATA.cta=`Klik keranjang sekarang!`;
 
-if(tab=="prompt")result.value=prompt;
-if(tab=="caption")result.value=caption;
-if(tab=="hashtag")result.value=hashtag;
-if(tab=="hook")result.value=hook;
-if(tab=="cta")result.value=cta;
+output.value=DATA[activeTab];
 }
 
-function copy(){
-navigator.clipboard.writeText(result.value);
-alert("Tersalin!");
-}
-
-function bgUpload(i){
-let r=new FileReader();
-r.onload=()=>document.body.style.background="url("+r.result+") center/cover";
-r.readAsDataURL(i.files[0]);
+function copyText(){
+navigator.clipboard.writeText(output.value);
+alert("Disalin!");
 }
 
 function setTheme(t){
-if(t=="blue")document.body.style.background="linear-gradient(135deg,#001a33,#003366,#0055aa)";
-if(t=="pink")document.body.style.background="linear-gradient(135deg,#330018,#660033,#ff4fd8)";
-if(t=="black")document.body.style.background="#000";
-if(t=="purple")document.body.style.background="linear-gradient(135deg,#1a002a,#3b0070,#7a2cff)";
+if(t=="Ungu")document.body.style.background="linear-gradient(135deg,#16001f,#3a005f,#7b2cff)";
+if(t=="Biru")document.body.style.background="linear-gradient(135deg,#001a33,#003366,#0055aa)";
+if(t=="Pink")document.body.style.background="linear-gradient(135deg,#330018,#660033,#ff4fd8)";
+if(t=="Hitam")document.body.style.background="#000";
 }
 </script>
 
